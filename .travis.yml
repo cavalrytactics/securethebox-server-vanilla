@@ -3,7 +3,7 @@ deploy:
   skip_cleanup: true
   keyfile: ./secrets/securethebox-travis-ci-account.json
   project: securethebox-server
-  on:
+  true:
     all_branches: true
 jobs:
   include:
@@ -16,12 +16,11 @@ jobs:
     - sudo apt-get install google-cloud-sdk -y
     - sudo apt-get install kubectl -y
     - cd ./secrets/
-    - openssl aes-256-cbc -K $encrypted_e03d3ed3a5f6_key -iv $encrypted_e03d3ed3a5f6_iv 
-      -in securethebox-travis-ci-account.json.enc -out securethebox-travis-ci-account.json 
+    - openssl aes-256-cbc -K $encrypted_e03d3ed3a5f6_key -iv $encrypted_e03d3ed3a5f6_iv
+      -in securethebox-travis-ci-account.json.enc -out securethebox-travis-ci-account.json
       -d
     env:
       global: CLOUDSDK_CORE_DISABLE_PROMPTS=1 CLOUDSDK_INSTALL_DIR=$HOME/google-cloud-sdk
-        APPENV=PROD
     install:
     - pwd
     - cd ..
@@ -31,6 +30,7 @@ jobs:
     python: 3.7
     script:
     - pwd
+    - pytest
     services:
     - docker
 language: python

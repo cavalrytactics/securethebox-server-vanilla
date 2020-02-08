@@ -12,6 +12,8 @@
 # below:
 .git
 .gitignore
+.vscode
+venv/
 
 # Python pycache:
 __pycache__/
