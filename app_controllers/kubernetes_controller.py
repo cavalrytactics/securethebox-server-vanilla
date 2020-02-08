@@ -376,7 +376,6 @@ class KubernetesController():
                 return False
             else:
                 context = f"gke_{self.googleProjectId}_{self.googleKubernetesComputeZone}_{self.googleKubernetesComputeCluster}"
-                print("CONTEXT:",context)
                 config.load_kube_config(context=context)
                 subprocess.Popen([f"kubectl config use-context {context}"], stdout=subprocess.PIPE, shell=True).wait()
                 return True
@@ -457,6 +456,7 @@ class KubernetesController():
                     pod_id = str(i)
                     findPod = False
                     self.kubernetesPodId = pod_id
+                    print("POD ID:",str(pod_id))
                     return True, str(pod_id)
             return False, "0"
 

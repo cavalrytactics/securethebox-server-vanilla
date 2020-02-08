@@ -53,10 +53,8 @@ class TravisController():
                 return True
 
             elif fileExists == True:
-                print("File exists!")
                 process = subprocess.Popen(
                     [f"echo 'yes' | travis encrypt-file -f -p ./secrets/{self.fileName}"], stdout=subprocess.PIPE, shell=True)
-                print("Encrypted file")
                 finished = True
                 keyVariableKEY = ""
                 keyVariableVALUE = ""
@@ -66,17 +64,14 @@ class TravisController():
                 keyEnvironmentVariable = ""
                 ivEnvironmentVariable = ""
                 while finished:
-                    print("Looking for decrypt line")
                     output = process.stdout.readline()
                     if output == '' and process.poll() is not None:
                         finished = True
                     if "openssl" in output.strip().decode("utf-8"):
                         decryptCommand = str(output.strip().decode("utf-8"))
-                        print("decrypt command",decryptCommand)
                         dep = ""
                         with open("./.travis.yml", "r") as f:
                             dep = yaml.safe_load(f)
-                            print("Loaded yaml",dep)
                             finalDecryptCommand = decryptCommand.replace(
                                 f"./secrets/{self.fileName} -d", f"{self.fileName} -d && tar xvf secrets.tar")
                             if finalDecryptCommand not in dep["jobs"]["include"][0]["before_install"]:
@@ -84,10 +79,8 @@ class TravisController():
                                     finalDecryptCommand)
                         with open("./.travis.yml", "w") as f:
                             yaml.dump(dep, f)
-                            print("Updated travis.yaml")
                         os.rename(f"{self.currentDirectory}/{encryptedFileName}",
                                   f"{self.currentDirectory}/secrets/{encryptedFileName}")
-                        print("moved file")
                         keyEnvironmentVariableMatch = re.finditer(
                             "(([$]encrypted.)(.*[_]key))", str(decryptCommand), re.MULTILINE)
                         ivEnvironmentVariableMatch1 = re.finditer(
@@ -104,21 +97,18 @@ class TravisController():
                         keyVariableKEY = keyEnvironmentVariable
                         setattr(self, ivEnvironmentVariable, "")
                         ivVariableKEY = ivEnvironmentVariable
-                        print("Key variables",keyVariableKEY,ivVariableKEY)
 
                     if "key:" in output.strip().decode("utf-8"):
                         setattr(self, keyVariableKEY,
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[keyVariableKEY] = output.strip().decode(
                             "utf-8").replace("key:", "").strip()
-                        print("SET VALUE:",self.encryptedEnvironmentVariables[keyVariableKEY])
 
                     if "iv:" in output.strip().decode("utf-8"):
                         setattr(self, ivVariableKEY,
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[ivVariableKEY] = output.strip().decode(
                             "utf-8").replace("iv:", "").strip()
-                        print("SET VALUE:",self.encryptedEnvironmentVariables[ivVariableKEY])
                         return True
             else:
                 print("Unencrypted File does not EXIST!",
