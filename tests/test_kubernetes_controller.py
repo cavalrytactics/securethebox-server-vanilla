@@ -96,21 +96,21 @@ def test_setGoogleKubernetesComputeRegion():
     assert kc.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"]) == True
 
 def test_setGoogleServiceAccountEmail():
-    assert kc.setGoogleServiceAccountEmail(pytest.globalData["googleServiceAccountEmail"]) == True
+    assert kc.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"]) == True
 
 def test_loadGoogleKubernetesServiceAccount():
     kc.setCurrentDirectory()
-    kc.setFileName(pytest.globalData["googleServiceAccountFile"])
-    kc.setGoogleServiceAccountEmail(pytest.globalData["googleServiceAccountEmail"])
+    kc.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
+    kc.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
     assert kc.loadGoogleKubernetesServiceAccount() == True
 
 def test_createGoogleKubernetesCluster():
     kc.setCurrentDirectory()
-    kc.setFileName(pytest.globalData["googleServiceAccountFile"])
+    kc.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
     kc.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
     kc.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
     kc.setGoogleProjectId(pytest.globalData["googleProjectId"])
-    kc.setGoogleServiceAccountEmail(pytest.globalData["googleServiceAccountEmail"])
+    kc.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
     kc.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
     assert kc.createGoogleKubernetesCluster() == True
 
@@ -118,24 +118,12 @@ def test_getGoogleKubernetesClusterCredentials():
     kc.setCurrentDirectory()
     for var in pytest.globalData["environmentVariablesList"]:
         kc.setEnvironmentVariable(var)
-    kc.setFileName(pytest.globalData["googleServiceAccountFile"])
-    kc.setGoogleServiceAccountEmail(pytest.globalData["googleServiceAccountEmail"])
+    kc.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
+    kc.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
     kc.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
     kc.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
     kc.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
     assert kc.getGoogleKubernetesClusterCredentials() == True
-
-# def test_selectGoogleKubernetesClusterContext():
-#     for var in pytest.globalData["environmentVariablesList"]:
-#         kc.setEnvironmentVariable(var)
-#     kc.setGoogleProjectId(pytest.globalData["googleProjectId"])
-#     kc.setFileName(pytest.globalData["googleServiceAccountFile"])
-#     kc.setGoogleServiceAccountEmail(pytest.globalData["googleServiceAccountEmail"])
-#     kc.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
-#     kc.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
-#     kc.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
-#     kc.getGoogleKubernetesClusterCredentials()
-#     assert kc.selectGoogleKubernetesClusterContext()
 
 def test_manageKubernetesIngressPod_apply():
     for var in pytest.globalData["environmentVariablesList"]:
@@ -252,11 +240,11 @@ def test_manageKubernetesIngressPod_delete():
 
 def test_deleteGoogleKubernetesCluster():
     kc.setCurrentDirectory()
-    kc.setFileName(pytest.globalData["googleServiceAccountFile"])
+    kc.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
     kc.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
     kc.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
     kc.setGoogleProjectId(pytest.globalData["googleProjectId"])
-    kc.setGoogleServiceAccountEmail(pytest.globalData["googleServiceAccountEmail"])
+    kc.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
     kc.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
     kc.selectGoogleKubernetesClusterContext()
     assert kc.deleteGoogleKubernetesCluster() == True

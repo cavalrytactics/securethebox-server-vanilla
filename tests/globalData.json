@@ -9,8 +9,8 @@
     "kubectlAction_delete": "delete",
     "kubernetesPodId": "pod_id_123",
     "unencryptedFileNames": [
-        "securethebox-service-account.json",
-        "securethebox-travis-ci-account.json"
+        "stb-kubernetes-engine-sa.json",
+        "stb-app-engine-sa.json"
     ],
     "environmentVariablesList": [
         "GOOGLE_CLIENT_ID",
@@ -20,10 +20,10 @@
     "googleKubernetesComputeZone": "us-west2-a",
     "googleKubernetesComputeCluster": "test",
     "googleKubernetesComputeRegion": "us-west2",
-    "googleServiceAccountEmail": "securethebox-server-sa@securethebox-server.iam.gserviceaccount.com",
-    "googleServiceAccountFile": "securethebox-service-account.json",
-    "googleAppEngineServiceAccountEmail": "securethebox-server-travis-ci@securethebox-server.iam.gserviceaccount.com",
-    "googleAppEngineServiceAccountFile": "securethebox-travis-ci-account.json",
+    "googleKubernetesEngineServiceAccountEmail": "stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com",
+    "googleKubernetesEngineServiceAccountFile": "stb-kubernetes-engine-sa.json",
+    "googleAppEngineServiceAccountEmail": "stb-app-engine-sa@securethebox-server.iam.gserviceaccount.com",
+    "googleAppEngineServiceAccountFile": "stb-app-engine-sa.json",
     "localKubernetesCluster": "docker-desktop",
     "testProdKubernetesCluster": "gke_securethebox-server_us-west2-a_test"
 }
