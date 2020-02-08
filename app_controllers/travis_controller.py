@@ -32,8 +32,9 @@ class TravisController():
     def tarSecretFiles(self,listOfFiles):
         try:
             self.currentDirectory = os.getcwd()
+            os.chdir(self.currentDirectory+"/secrets")
             subprocess.Popen([f"tar cvf secrets.tar {(' '.join(listOfFiles))}"], stdout=subprocess.PIPE, shell=True)
-            os.rename(f"{self.currentDirectory}/secrets.tar", f"{self.currentDirectory}/secrets/secrets.tar")
+            os.chdir(self.currentDirectory)
             return True
         except:
             return False

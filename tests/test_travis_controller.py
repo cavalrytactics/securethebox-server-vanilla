@@ -13,6 +13,6 @@ def test_loadGlobalData():
 def test_setTravisEncryptUncryptFiles():
     tc.setCurrentDirectory()
     tc.setFileName("secrets.tar")
-    tc.tarSecretFiles(pytest.globalData["unencryptedFileNames"])
+    assert tc.tarSecretFiles(pytest.globalData["unencryptedFileNames"]) == True
     assert tc.setTravisEncryptFile() == True
     assert tc.setTravisUnencryptFile() == True
