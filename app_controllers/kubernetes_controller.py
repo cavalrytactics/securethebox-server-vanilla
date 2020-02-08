@@ -351,7 +351,7 @@ class KubernetesController():
             subprocess.Popen(
                 [f"gcloud config set account {self.googleServiceAccountEmail}"], shell=True).wait()
             subprocess.Popen(
-                [f"gcloud container clusters get-credentials {self.googleKubernetesComputeCluster} --project {self.googleProjectId}"], shell=True).wait()
+                [f"gcloud container clusters get-credentials {self.googleKubernetesComputeCluster} --project {self.googleProjectId} --zone {self.googleKubernetesComputeZone}"], shell=True).wait()
             return True
         except:
             return False
@@ -363,7 +363,7 @@ class KubernetesController():
             subprocess.Popen(
                 [f"gcloud config set account {self.googleServiceAccountEmail}"], shell=True).wait()
             subprocess.Popen(
-                [f"echo \"y\" | gcloud container clusters delete {self.googleKubernetesComputeCluster} --project {self.googleProjectId}"], stdout=subprocess.PIPE, shell=True).wait()
+                [f"echo \"y\" | gcloud container clusters delete {self.googleKubernetesComputeCluster} --project {self.googleProjectId} --zone {self.googleKubernetesComputeZone}"], stdout=subprocess.PIPE, shell=True).wait()
             return True
         except:
             return False
