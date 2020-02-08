@@ -24,6 +24,7 @@ jobs:
         APPENV=PROD
     install:
     - pwd
+    - cd ..
     - pip install -r requirements.txt
     language: python
     os: linux
