@@ -28,6 +28,15 @@ class TravisController():
             return True
         except:
             return False
+    
+    def tarSecretFiles(self,listOfFiles):
+        try:
+            self.currentDirectory = os.getcwd()
+            subprocess.Popen([f"tar cvf secrets.tar {(' '.join(listOfFiles))}"], stdout=subprocess.PIPE, shell=True)
+            os.rename(f"{self.currentDirectory}/secrets.tar", f"{self.currentDirectory}/secrets/secrets.tar")
+            return True
+        except:
+            return False
 
     def setTravisEncryptFile(self):
         try:
@@ -69,7 +78,7 @@ class TravisController():
                             dep = yaml.safe_load(f)
                             print("Loaded yaml",dep)
                             finalDecryptCommand = decryptCommand.replace(
-                                f"./secrets/{self.fileName} -d", f"{self.fileName} -d")
+                                f"./secrets/{self.fileName} -d", f"{self.fileName} -d && tar xvf secrets.tar")
                             if finalDecryptCommand not in dep["jobs"]["include"][0]["before_install"]:
                                 dep["jobs"]["include"][0]["before_install"].append(
                                     finalDecryptCommand)

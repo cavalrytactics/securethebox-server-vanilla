@@ -11,8 +11,8 @@ def test_loadGlobalData():
         pytest.globalData = json.load(f)
 
 def test_setTravisEncryptUncryptFiles():
-    for file in pytest.globalData["unencryptedFileNames"]:
-        tc.setCurrentDirectory()
-        tc.setFileName(file)
-        assert tc.setTravisEncryptFile() == True
-        assert tc.setTravisUnencryptFile() == True
+    tc.setCurrentDirectory()
+    tc.setFileName("secrets.tar")
+    tc.tarSecretFiles(pytest.globalData["unencryptedFileNames"])
+    assert tc.setTravisEncryptFile() == True
+    assert tc.setTravisUnencryptFile() == True

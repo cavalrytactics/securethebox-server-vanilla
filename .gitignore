@@ -5,6 +5,7 @@ secrets/*.json
 secrets/*.txt
 secrets/*.yaml
 secrets/*.yml
+secrets/*.tar
 
 
 # Logs

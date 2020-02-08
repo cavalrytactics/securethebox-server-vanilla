@@ -25,5 +25,5 @@
     "googleAppEngineServiceAccountEmail": "securethebox-server-travis-ci@securethebox-server.iam.gserviceaccount.com",
     "googleAppEngineServiceAccountFile": "securethebox-travis-ci-account.json",
     "localKubernetesCluster": "docker-desktop",
-    "testProdKubernetesCluster": "gke_securethebox_us-west2-a_test"
+    "testProdKubernetesCluster": "gke_securethebox-server_us-west2-a_test"
 }
