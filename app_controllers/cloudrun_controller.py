@@ -1,11 +1,12 @@
 import subprocess
 import os
 """
+
 IAM Permissions:
 Cloud Run Admin
 Cloud Run Service Agent
 Storage Admin
-*Enable Domain Wide Delegation
+*Enable Domain Wide Delegation (Allows Service Account Requests)
 
 """
 
@@ -79,7 +80,6 @@ class CloudRunController():
         except:
             return False
         
-        
     def setAccount(self):
         try:
             subprocess.Popen([f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName}"],shell=True).wait()
@@ -88,7 +88,6 @@ class CloudRunController():
             return True
         except:
             return False
-        
 
     def buildImage(self):
         try:
