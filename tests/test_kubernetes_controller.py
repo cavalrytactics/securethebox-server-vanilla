@@ -179,6 +179,9 @@ def test_manageKubernetesServicePod_apply():
     assert kc.manageKubernetesServicePod() == True
 
 def test_getKubernetesPodId():
+    for x in range(30):
+        time.sleep(1)
+        print(x)
     kc.setUserName(pytest.globalData["userName"])
     kc.setServiceName(pytest.globalData["serviceName_service"])
     value, podId = kc.getKubernetesPodId()
