@@ -1,3 +1,10 @@
+deploy:
+  provider: gae
+  skip_cleanup: true
+  keyfile: ./secrets/stb-app-engine-sa.json
+  project: securethebox-server
+  true:
+    all_branches: true
 jobs:
   include:
   - before_install:

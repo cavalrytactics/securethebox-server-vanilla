@@ -17,12 +17,9 @@ app.loadApplications(
         {'name': 'splunk', 'label': 'Splunk', 'category': 'siem','category_label': 'SIEM'}, 
     ])
 
-apps_parser = reqparse.RequestParser()
-apps_parser.add_argument('yamlData', help='{error_msg}')
-
 api = Namespace('applications', description='Applications related operations')
 
-@api.route('/')
+@api.route('')
 class ApplicationsList(Resource):
     @api.doc('get_applications_list')
     def get(self):

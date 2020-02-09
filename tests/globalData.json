@@ -9,6 +9,7 @@
     "kubectlAction_delete": "delete",
     "kubernetesPodId": "pod_id_123",
     "unencryptedFileNames": [
+        "securethebox-client-stb-cloud-run-sa.json",
         "stb-kubernetes-engine-sa.json",
         "stb-app-engine-sa.json",
         "firebase-adminsdk.json"
@@ -18,11 +19,17 @@
         "GOOGLE_CLIENT_SECRET"
     ],
     "googleProjectId": "securethebox-server",
-    "googleKubernetesComputeZone": "us-west2-a",
+    "googleKubernetesComputeZone": "us-central1-a",
     "googleKubernetesComputeCluster": "testclusternamelower",
-    "googleKubernetesComputeRegion": "us-west2",
+    "googleKubernetesComputeRegion": "us-central1",
     "googleKubernetesEngineServiceAccountEmail": "stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com",
     "googleKubernetesEngineServiceAccountFile": "stb-kubernetes-engine-sa.json",
     "googleAppEngineServiceAccountEmail": "stb-app-engine-sa@securethebox-server.iam.gserviceaccount.com",
-    "googleAppEngineServiceAccountFile": "stb-app-engine-sa.json"
+    "googleAppEngineServiceAccountFile": "stb-app-engine-sa.json",
+    "googleCloudRunServiceAccountEmail":"stb-cloud-run-sa@securethebox-client.iam.gserviceaccount.com",
+    "googleCloudRunServiceAccountFile":"securethebox-client-stb-cloud-run-sa.json",
+    "googleCloudRunProjectId":"securethebox-client",
+    "googleCloudRunImageName":"securethebox-server",
+    "googleCloudRunRegion":"us-central1",
+    "googleCloudRunPlatform":"managed"
 }

@@ -12,6 +12,10 @@ def test_loadGlobalData():
 
 kc = KubernetesController()
 
+def test_setEnvironmentVariables():
+    for var in pytest.globalData["environmentVariablesList"]:
+        assert kc.setEnvironmentVariable(var) == True
+
 def test_setCurrentDirectory():
     assert kc.setCurrentDirectory() == True
 
@@ -30,10 +34,6 @@ def test_setUserName():
 
 def test_setEmailAddress():
     assert kc.setEmailAddress(pytest.globalData["emailAddress"]) == True
-
-def test_setEnvironmentVariables():
-    for var in pytest.globalData["environmentVariablesList"]:
-        assert kc.setEnvironmentVariable(var) == True
 
 def test_setKubernetesPodId():
     assert kc.setKubernetesPodId(pytest.globalData["kubernetesPodId"]) == True
