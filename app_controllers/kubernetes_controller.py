@@ -1,7 +1,6 @@
 import subprocess
 import json
 import os
-import subprocess
 from subprocess import check_output
 from os import path
 import yaml
@@ -315,6 +314,14 @@ class KubernetesController():
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
                 [f"gcloud config set account {self.googleServiceAccountEmail} >> /dev/null 2>&1"], shell=True).wait()
+            return True
+        except:
+            return False
+    
+    def setGoogleKubernetesProject(self):
+        try:
+            subprocess.Popen(
+                [f"gcloud config set project {self.googleProjectId}"], shell=True).wait()
             return True
         except:
             return False

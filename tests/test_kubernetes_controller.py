@@ -104,6 +104,10 @@ def test_loadGoogleKubernetesServiceAccount():
     kc.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
     assert kc.loadGoogleKubernetesServiceAccount() == True
 
+def test_setGoogleKubernetesProject():
+    assert kc.setGoogleProjectId(pytest.globalData["googleProjectId"])
+    assert kc.setGoogleKubernetesProject() == True
+
 def test_createGoogleKubernetesCluster():
     kc.setCurrentDirectory()
     kc.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])

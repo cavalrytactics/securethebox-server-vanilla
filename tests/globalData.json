@@ -3,14 +3,15 @@
     "serviceName_service": "jenkins",
     "serviceName_dns": "external-dns",
     "serviceName_authentication": "auth",
-    "userName": "charles",
+    "userName": "testUserName",
     "emailAddress": "jidokaus@gmail.com",
     "kubectlAction_apply": "apply",
     "kubectlAction_delete": "delete",
     "kubernetesPodId": "pod_id_123",
     "unencryptedFileNames": [
         "stb-kubernetes-engine-sa.json",
-        "stb-app-engine-sa.json"
+        "stb-app-engine-sa.json",
+        "firebase-adminsdk.json"
     ],
     "environmentVariablesList": [
         "GOOGLE_CLIENT_ID",
@@ -18,12 +19,10 @@
     ],
     "googleProjectId": "securethebox-server",
     "googleKubernetesComputeZone": "us-west2-a",
-    "googleKubernetesComputeCluster": "test",
+    "googleKubernetesComputeCluster": "testClusterName",
     "googleKubernetesComputeRegion": "us-west2",
     "googleKubernetesEngineServiceAccountEmail": "stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com",
     "googleKubernetesEngineServiceAccountFile": "stb-kubernetes-engine-sa.json",
     "googleAppEngineServiceAccountEmail": "stb-app-engine-sa@securethebox-server.iam.gserviceaccount.com",
-    "googleAppEngineServiceAccountFile": "stb-app-engine-sa.json",
-    "localKubernetesCluster": "docker-desktop",
-    "testProdKubernetesCluster": "gke_securethebox-server_us-west2-a_test"
+    "googleAppEngineServiceAccountFile": "stb-app-engine-sa.json"
 }

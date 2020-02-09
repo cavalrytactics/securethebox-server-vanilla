@@ -1,9 +1,9 @@
-from app_controllers.academy.categories import Categories
-from app_controllers.academy.category import Category
-from app_controllers.academy.courses import Courses
-from app_controllers.academy.course import Course
-from app_controllers.academy.steps import Steps
-from app_controllers.academy.step import Step
+from app_models.academy.categories import Categories
+from app_models.academy.category import Category
+from app_models.academy.courses import Courses
+from app_models.academy.course import Course
+from app_models.academy.steps import Steps
+from app_models.academy.step import Step
 import uuid
 
 category1 = Category()
