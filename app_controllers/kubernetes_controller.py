@@ -16,7 +16,6 @@ class KubernetesController():
         self.userName = ""
         self.kubectlAction = ""
         self.fileName = ""
-        self.encryptedEnvironmentVariables = {}
         self.kubernetesDeploymentImage = ""
         self.kubernetesDeploymentName = ""
         self.kubernetesHost = ""
@@ -321,7 +320,7 @@ class KubernetesController():
     def setGoogleKubernetesProject(self):
         try:
             subprocess.Popen(
-                [f"gcloud config set project {self.googleProjectId}"], shell=True).wait()
+                [f"gcloud config set project {self.googleProjectId} >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False
@@ -331,7 +330,7 @@ class KubernetesController():
             subprocess.Popen(
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
-                [f"gcloud config set account {self.googleServiceAccountEmail}"], shell=True).wait()
+                [f"gcloud config set account {self.googleServiceAccountEmail} >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"gcloud container \
                 --project \"{self.googleProjectId}\" clusters create \"{self.googleKubernetesComputeCluster}\" \
                 --zone \"{self.googleKubernetesComputeZone}\" \
@@ -344,6 +343,8 @@ class KubernetesController():
                 --scopes \"https://www.googleapis.com/auth/devstorage.read_only\",\"https://www.googleapis.com/auth/logging.write\",\"https://www.googleapis.com/auth/monitoring\",\"https://www.googleapis.com/auth/servicecontrol\",\"https://www.googleapis.com/auth/service.management.readonly\",\"https://www.googleapis.com/auth/trace.append\" \
                 --num-nodes \"3\" \
                 --enable-ip-alias \
+                --enable-stackdriver-kubernetes \
+                --addons \"HorizontalPodAutoscaling\",\"HttpLoadBalancing\",\"CloudRun\" \
                 --network \"projects/{self.googleProjectId}/global/networks/default\" \
                 --subnetwork \"projects/{self.googleProjectId}/regions/{self.googleKubernetesComputeRegion}/subnetworks/default\" \
                 --default-max-pods-per-node \"8\""], shell=True).wait()
@@ -356,9 +357,9 @@ class KubernetesController():
             subprocess.Popen(
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
-                [f"gcloud config set account {self.googleServiceAccountEmail}"], shell=True).wait()
+                [f"gcloud config set account {self.googleServiceAccountEmail} >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
-                [f"gcloud container clusters get-credentials {self.googleKubernetesComputeCluster} --project {self.googleProjectId} --zone {self.googleKubernetesComputeZone}"], shell=True).wait()
+                [f"gcloud container clusters get-credentials {self.googleKubernetesComputeCluster} --project {self.googleProjectId} --zone {self.googleKubernetesComputeZone} >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False
@@ -368,7 +369,7 @@ class KubernetesController():
             subprocess.Popen(
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
-                [f"gcloud config set account {self.googleServiceAccountEmail}"], shell=True).wait()
+                [f"gcloud config set account {self.googleServiceAccountEmail} >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
                 [f"echo \"y\" | gcloud container clusters delete {self.googleKubernetesComputeCluster} --project {self.googleProjectId} --zone {self.googleKubernetesComputeZone}"], stdout=subprocess.PIPE, shell=True).wait()
             return True
@@ -478,6 +479,27 @@ class KubernetesController():
             else:
                 return True, i
         return False, "unknown"
+
+    def deployImage(self):
+        try:
+            subprocess.Popen([f"gcloud config set run/region us-central1"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set run/platform gke"],shell=True).wait()
+            subprocess.Popen([f"gcloud auth activate-service-account --key-file ./secrets/stb-kubernetes-engine-sa.json"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set project securethebox-server"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set account stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com"],shell=True).wait()
+            subprocess.Popen([f"docker build . --tag gcr.io/securethebox-server/securethebox-server"],shell=True).wait()
+            subprocess.Popen([f"docker push gcr.io/securethebox-server/securethebox-server"],shell=True).wait()
+            subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/securethebox-server/securethebox-server --cluster testclusternamelower --cluster-location us-central1-a"],shell=True).wait()
+            return True
+        except:
+            return False
+
+    def deleteImage(self):
+        try:
+            subprocess.Popen([f"echo 'y' | gcloud run services delete securethebox-server --cluster testclusternamelower --cluster-location us-central1-a"],shell=True).wait()
+            return True
+        except:
+            return False
 
 
 """ ############################################################################################################################## """

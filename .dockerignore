@@ -1,6 +1,19 @@
 # SECURETHEBOX
 venv/
 .vscode/
+dev-env/oh-my-zsh/coder/
+dev-env/code-server/extensions/
+dev-env/code-server/logs/
+dev-env/code-server/heartbeat
+dev-env/code-server/machineid
+dev-env/code-server/User/Backups/
+dev-env/code-server/User/snippets/
+dev-env/code-server/User/state/
+secrets/*.json
+secrets/*.txt
+secrets/*.yaml
+secrets/*.yml
+secrets/*.tar
 
 # Logs
 logs
