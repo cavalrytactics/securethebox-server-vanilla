@@ -9,9 +9,24 @@ from app_models.academy.step import Step
 from app_models.academy.steps import Steps
 import sys
 import uuid
+import os
+import subprocess
 
 # Use a service account
-cred = credentials.Certificate('./secrets/firebase-adminsdk.json')
+# Use a service account
+try:
+    cred = credentials.Certificate(os.getcwd()+'/secrets/firebase-adminsdk.json')
+except:
+    currentDirectory = os.getcwd()
+    with open(os.getcwd()+"/secrets/openssl","r") as f:
+        envList = str(f.readline()).replace("$","").split(",")
+        os.chdir(os.getcwd()+"/secrets")
+        print(f"openssl aes-256-cbc -K {os.environ[str(envList[0])]} -iv {os.environ[str(envList[1])]} -in secrets.tar.enc -out secrets.tar -d && tar xvf secrets.tar")
+        subprocess.Popen([f"openssl aes-256-cbc -K {os.environ[str(envList[0])]} -iv {os.environ[str(envList[1])]} -in secrets.tar.enc -out secrets.tar -d && tar xvf secrets.tar"],shell=True).wait()
+        os.chdir(currentDirectory)
+        print("SUCCESS",envList)
+        cred = credentials.Certificate(os.getcwd()+'/secrets/firebase-adminsdk.json')
+
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()

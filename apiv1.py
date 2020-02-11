@@ -15,3 +15,5 @@ api.add_namespace(ns2)
 api.add_namespace(ns3)
 api.add_namespace(ns4)
 # api.add_namespace(ns5)
+
+# REST

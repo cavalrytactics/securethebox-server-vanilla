@@ -31,6 +31,9 @@ def test_addCourse():
     a.setCourse("course title", "course description", "web", 120)
     assert a.addCourse() == True
 
+def test_getCourse():
+    status, course = a.getCourse()
+    assert status == True
 
 def test_getCourses():
     status, courses = a.getCourses()

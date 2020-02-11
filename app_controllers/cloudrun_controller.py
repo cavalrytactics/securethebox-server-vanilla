@@ -1,5 +1,6 @@
 import subprocess
 import os
+from os import path
 """
 
 IAM Permissions:
@@ -106,7 +107,22 @@ class CloudRunController():
 
     def deployImage(self):
         try:
-            subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/{self.projectId}/{self.imageName} --region {self.region}"],shell=True).wait()
+            fileExists = path.exists(self.currentDirectory+"/secrets/openssl.txt")
+            # For Local Deploy
+            if fileExists == True:
+                with open(self.currentDirectory+"/secrets/openssl.txt","r") as f:
+                    env = str(f.readline()).replace("$","")
+                    subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/{self.projectId}/{self.imageName} --update-env-vars {env} --region {self.region}"],shell=True).wait()
+            # For Travis Deploy
+            else:
+                with open(self.currentDirectory+"/secrets/openssl","r") as f:
+                    envList = str(f.readline()).replace("$","").split(",")
+                    slist = envList.split(",")
+                    l = []
+                    for line in slist:
+                        l.append(line+"="+str(os.environ[str(line)]))
+                    concatList = ",".join(l)
+                    subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/{self.projectId}/{self.imageName} --update-env-vars {concatList} --region {self.region}"],shell=True).wait()
             return True
         except:
             return False

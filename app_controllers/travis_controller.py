@@ -110,6 +110,11 @@ class TravisController():
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[ivVariableKEY] = output.strip().decode(
                             "utf-8").replace("iv:", "").strip()
+                        with open("./secrets/openssl.txt","w") as f:
+                            f.write(f"{keyVariableKEY}={self.encryptedEnvironmentVariables[keyVariableKEY]},")
+                            f.write(f"{ivVariableKEY}={self.encryptedEnvironmentVariables[ivVariableKEY]}")
+                        with open("./secrets/openssl","w") as f:
+                            f.write(f"{keyVariableKEY},{ivVariableKEY}")
                         return True
             else:
                 print("Unencrypted File does not EXIST!",

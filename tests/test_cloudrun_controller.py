@@ -51,6 +51,7 @@ def test_pushImage():
     assert crc.pushImage() == True
 
 def test_deployImage():
+    crc.setCurrentDirectory()
     crc.setProjectId(pytest.globalData["googleCloudRunProjectId"])
     crc.setImageName(pytest.globalData["googleCloudRunImageName"])
     crc.setRegion(pytest.globalData["googleCloudRunRegion"])

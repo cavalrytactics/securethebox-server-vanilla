@@ -30,13 +30,18 @@ class Academy():
             return True, self.courses.getCourses()
         except:
             return False
+    
+    def getCourse(self):
+        try:
+            return True, self.course.to_dict()
+        except:
+            return False
 
     def getSteps(self):
         try:
             return True, self.steps.getSteps()
         except:
             return False
-        
 
     def addCategory(self, value, label, color):
         try:
@@ -52,8 +57,7 @@ class Academy():
             self.steps.addStep(self.step.to_dict())
             return True
         except:
-            return False
-        
+            return False  
 
     def setCourse(self, title, description, categoryValue, courseLength):
         try:
