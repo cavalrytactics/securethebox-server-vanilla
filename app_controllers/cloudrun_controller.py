@@ -116,7 +116,7 @@ class CloudRunController():
             # For Travis Deploy
             else:
                 with open(self.currentDirectory+"/secrets/openssl","r") as f:
-                    envList = str(f.readline()).replace("$","").split(",")
+                    envList = str(f.readline()).replace("$","")
                     slist = envList.split(",")
                     l = []
                     for line in slist:
