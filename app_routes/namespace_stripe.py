@@ -1,5 +1,5 @@
-from flask_restplus import Namespace, Resource, fields, reqparse, request
-from flask import jsonify
+from flask_restplus import Namespace, Resource, fields, reqparse
+from flask import jsonify, request
 from .initialize.academy import main
 from app_controllers.firestore.firestore_academy import FirestoreAcademy
 import json
