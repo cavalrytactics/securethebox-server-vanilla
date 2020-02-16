@@ -1,15 +1,12 @@
-from app_models.academy.categories import Categories
-from app_models.academy.category import Category
-from app_models.academy.courses import Courses
-from app_models.academy.course import Course
-from app_models.academy.steps import Steps
-from app_models.academy.step import Step
+from app_models.rest.academy.categories import Categories
+from app_models.rest.academy.category import Category
+from app_models.rest.academy.courses import Courses
+from app_models.rest.academy.course import Course
+from app_models.rest.academy.steps import Steps
+from app_models.rest.academy.step import Step
 import uuid
 import re
 
-"""
-Academy is made out of several Courses
-"""
 class Academy():
     def __init__(self):
         self.categories = Categories()
@@ -18,12 +15,6 @@ class Academy():
         self.course = Course()
         self.steps = Steps()
         self.step = Step()
-        
-    def getCategories(self):
-        try:
-            return True, self.categories.getCategories()
-        except:
-            return False
         
     def getCourses(self):
         try:
@@ -36,28 +27,6 @@ class Academy():
             return True, self.course.to_dict()
         except:
             return False
-
-    def getSteps(self):
-        try:
-            return True, self.steps.getSteps()
-        except:
-            return False
-
-    def addCategory(self, value, label, color):
-        try:
-            self.category.setCategory(len(self.categories.getCategories()), value, label, color)
-            self.categories.addCategory(self.category.to_dict())
-            return True
-        except:
-            return False
-    
-    def addStep(self, title, content):
-        try:
-            self.step.setStep(len(self.steps.getSteps()), title, content)
-            self.steps.addStep(self.step.to_dict())
-            return True
-        except:
-            return False  
 
     def setCourse(self, title, description, categoryValue, courseLength):
         try:
@@ -88,11 +57,18 @@ class Academy():
             return True
         except:
             return False
-        
-    def sanatizeString(self, someString):
+    
+    def getCategories(self):
         try:
-            newString = " ".join(re.split("[^A-Za-z0-9]+",someString)).replace(" ","-").lower()
-            return newString
+            return True, self.categories.getCategories()
+        except:
+            return False
+        
+    def addCategory(self, value, label, color):
+        try:
+            self.category.setCategory(len(self.categories.getCategories()), value, label, color)
+            self.categories.addCategory(self.category.to_dict())
+            return True
         except:
             return False
 
@@ -105,9 +81,28 @@ class Academy():
         except:
             return False
 
+    def getSteps(self):
+        try:
+            return True, self.steps.getSteps()
+        except:
+            return False
+    
+    def addStep(self, title, content):
+        try:
+            self.step.setStep(len(self.steps.getSteps()), title, content)
+            self.steps.addStep(self.step.to_dict())
+            return True
+        except:
+            return False  
+        
+    def sanatizeString(self, someString):
+        try:
+            newString = " ".join(re.split("[^A-Za-z0-9]+",someString)).replace(" ","-").lower()
+            return newString
+        except:
+            return False
 
-
-
+    
 category1 = Category()
 category2 = Category()
 category3 = Category()

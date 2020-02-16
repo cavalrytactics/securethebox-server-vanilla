@@ -5,8 +5,8 @@ class Step(object):
         self.content = ""
         self.stepDict = {}
 
-    def setStep(self,cid,title,content):
-        self.id = cid
+    def setStep(self,_id,title,content):
+        self.id = _id
         self.title = title
         self.content = content
 

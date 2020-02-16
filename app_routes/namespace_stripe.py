@@ -1,5 +1,4 @@
 from flask_restplus import Namespace, Resource, fields, reqparse
-from flask import jsonify, request
 from .initialize.academy import main
 from app_controllers.firestore.firestore_academy import FirestoreAcademy
 import json
@@ -15,7 +14,7 @@ stripe.api_version = os.getenv('STRIPE_API_VERSION')
 class StripePublicKey(Resource):
     @api.doc('get_public_key')
     def get(self):
-        return jsonify(publicKey=os.getenv('STRIPE_PUBLISHABLE_KEY')), 200, {'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Methods": "GET"} 
+        return {"publicKey": os.getenv('STRIPE_PUBLISHABLE_KEY')}, 200, {'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Methods": "GET"} 
 
 @api.route('/create-customer')
 class StripeCreateCustomer(Resource):

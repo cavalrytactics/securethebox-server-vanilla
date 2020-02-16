@@ -1,12 +1,11 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-from app_models.academy.Academy import Academy
+from app_models.rest.academy.Academy import Academy
 import sys
 import uuid
 import os
 
-# Use a service account
 try:
     cred = credentials.Certificate(os.getcwd()+'/secrets/firebase-adminsdk.json')
 except:
@@ -14,14 +13,11 @@ except:
     with open(os.getcwd()+"/secrets/openssl","r") as f:
         envList = str(f.readline()).replace("$","").split(",")
         os.chdir(os.getcwd()+"/secrets")
-        print(f"openssl aes-256-cbc -K {os.environ[str(envList[0])]} -iv {os.environ[str(envList[1])]} -in secrets.tar.enc -out secrets.tar -d && tar xvf secrets.tar")
         subprocess.Popen([f"openssl aes-256-cbc -K {os.environ[str(envList[0])]} -iv {os.environ[str(envList[1])]} -in secrets.tar.enc -out secrets.tar -d && tar xvf secrets.tar"],shell=True).wait()
         os.chdir(currentDirectory)
-        print("SUCCESS",envList)
         cred = credentials.Certificate(os.getcwd()+'/secrets/firebase-adminsdk.json')
 
 firebase_admin.initialize_app(cred)
-
 db = firestore.client()
 
 class FirestoreAcademyController():
@@ -41,6 +37,7 @@ class FirestoreAcademyController():
     def addCourse(self, course_payload):
         try:
             db.collection(u'academy').document(str(course_payload["category"])+"-"+str(course_payload["slug"])).set(course_payload)
+            # db.collection(u'academy').document(str(course_payload["category"])+"_"+str(course_payload["topic"]).replace(" ","_")+"_ic_"+course_payload["level"]).set(course_payload)
             return True
         except:
             return False

@@ -1,19 +1,19 @@
 from app_controllers.firestore_academy_controller import FirestoreAcademyController
-from app_models.academy.Academy import Academy
-import pytest
-import os
+from app_models.rest.academy.Academy import Academy
 import json
-
-fac = FirestoreAcademyController()
+import os
+import pytest
 
 pytest.globalData = []
+
+c = FirestoreAcademyController()
 
 def test_loadGlobalData():
     with open(str(os.getcwd())+"/tests/globalData.json", "r") as f:
         pytest.globalData = json.load(f)
 
 def test_getCourses():
-    status, courses = fac.getCourses()
+    status, courses = c.getCourses()
     assert status == True
 
 def test_addCourse():
@@ -22,17 +22,17 @@ def test_addCourse():
     a.addStep("step title","step context")
     a.setCourse("course title", "course description", "web", 120)
     status, course = a.getCourse()
-    assert fac.addCourse(course) == True
+    assert c.addCourse(course) == True
 
 def test_getCourse():
     academyId = "0-course-title"
-    status, course = fac.getCourse("0-course-title")
+    status, course = c.getCourse("0-course-title")
     assert status == True
 
 def test_updateCourse():
     academyId = "0-course-title"
-    assert fac.updateCourse(academyId, {u"description":"updated"}) == True
+    assert c.updateCourse(academyId, {u"description":"updated"}) == True
 
 def test_deleteCourse():
-    assert fac.deleteCourse("0","course-title") == True
+    assert c.deleteCourse("0","course-title") == True
 

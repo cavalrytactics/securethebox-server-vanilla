@@ -15,7 +15,10 @@
     ],
     "environmentVariablesList": [
         "GOOGLE_CLIENT_ID",
-        "GOOGLE_CLIENT_SECRET"
+        "GOOGLE_CLIENT_SECRET",
+        "MONGODB_USER",
+        "MONGODB_PASSWORD",
+        "MONGODB_CLUSTER"
     ],
     "googleProjectId": "securethebox-server",
     "googleKubernetesComputeZone": "us-central1-a",
