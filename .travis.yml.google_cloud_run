@@ -23,7 +23,7 @@ jobs:
     python: 3.7
     script:
     - pwd
-    - pytest -vs
+    - pytest -vs /tests
     services:
     - docker
 language: python

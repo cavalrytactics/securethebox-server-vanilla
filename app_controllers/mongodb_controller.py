@@ -21,7 +21,7 @@ class MongodbController():
 
     def setClient(self):
         try:
-            self.client = pymongo.MongoClient(f"mongodb+srv://{self.MONGODB_USER}:{self.MONGODB_PASSWORD}@{self.MONGODB_CLUSTER}")
+            self.client = pymongo.MongoClient("mongodb+srv://"+os.environ["MONGODB_USER"]+":"+os.environ["MONGODB_PASSWORD"]+"@"+os.environ["MONGODB_CLUSTER"])
             self.client.list_database_names()
             return True
         except:

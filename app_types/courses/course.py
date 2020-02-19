@@ -5,7 +5,6 @@ from app_models.graphql.course import Course as CourseModel
 from app_models.graphql.category import Category as CategoryModel
 from app_models.graphql.application import Application as ApplicationModel
 from app_models.graphql.service import Service as ServiceModel
-# from app_models.graphql.step import Step as StepModel
 
 class Course(MongoengineObjectType):
     class Meta:

@@ -11,14 +11,24 @@
     "unencryptedFileNames": [
         "securethebox-client-stb-cloud-run-sa.json",
         "stb-kubernetes-engine-sa.json",
-        "firebase-adminsdk.json"
+        "firebase-adminsdk.json",
+        "openssl",
+        "secrets.tar",
+        "openssl.txt",
+        "all_environment_variables.txt",
+        "stripe_publishable_dev.txt",
+        "stripe_secret_dev.txt"
     ],
     "environmentVariablesList": [
         "GOOGLE_CLIENT_ID",
         "GOOGLE_CLIENT_SECRET",
         "MONGODB_USER",
         "MONGODB_PASSWORD",
-        "MONGODB_CLUSTER"
+        "MONGODB_CLUSTER",
+        "MONGODB_NAMESPACE",
+        "STRIPE_API_VERSION",
+        "STRIPE_PUBLISHABLE_KEY",
+        "STRIPE_SECRET_KEY"
     ],
     "googleProjectId": "securethebox-server",
     "googleKubernetesComputeZone": "us-central1-a",

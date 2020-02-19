@@ -1,6 +1,10 @@
 from mongoengine import connect
+from bson import ObjectId
 from app_schema.courses.course import schema
-from app_models.graphql.courses import Course, Category, Topic, Step
+from app_models.graphql.course import Course
+from app_models.graphql.category import Category
+from app_models.graphql.application import Application
+from app_models.graphql.service import Service
 import os
 from gql import gql, Client
 from graphene.test import Client as TestClient
@@ -56,20 +60,34 @@ class GraphqlMongodbController():
         except:
             return False
 
-    def addCategory(self,category_payload):
+    def addCategory(self,payload):
         try:
-            value = category_payload["value"]
-            label = category_payload["label"]
-            color = category_payload["color"]
+            value = payload["value"]
+            label = payload["label"]
+            color = payload["color"]
             status, output = self.getCategoryByValue(value)
             if len(output) == 0:
-                print("Creating category...", value, label, color)
-                category = Category(value=value, label=label, color=color)
-                category.save()
-                categoryId = category.id
+                model = Category(value=value, label=label, color=color)
+                model.save()
+                modelId = model.id
             else:
-                categoryId = output[0]["node"]["id"]
-            return True, categoryId
+                modelId = output[0]["node"]["id"]
+            return True, modelId
+        except:
+            return False
+
+    def addService(self,payload):
+        try:
+            value = payload["value"]
+            status, output = self.getServiceByValue(value)
+            if len(output) == 0:
+                model = Service(value=value)
+                model.save()
+                modelId = model.id
+                
+            else:
+                modelId = output[0]["node"]["id"]
+            return True, modelId
         except:
             return False
 
@@ -114,8 +132,55 @@ class GraphqlMongodbController():
                 output = self.gqlclient.execute(query,variables=variables)
             else:
                 output = self.gqlclient.execute(query,variable_values=json.dumps(variables))
-            print(output["data"]["allCategories"]["edges"])
             return True, output["data"]["allCategories"]["edges"]
+        except:
+            return False
+
+    def getServiceByValue(self,value):
+        try:
+            query = gql('''
+            query ($value: String!) {
+                allServices (value: $value) {
+                    edges {
+                        node {
+                            id,
+                            value,
+                            label
+                        }
+                    }
+                }
+            }
+            ''')
+            variables = {"value":value}
+            if "pytest" in sys.modules:
+                output = self.gqlclient.execute(query,variables=variables)
+            else:
+                output = self.gqlclient.execute(query,variable_values=json.dumps(variables))
+            return True, output["data"]["allServices"]["edges"]
+        except:
+            return False
+
+    def getApplicationByValue(self,value):
+        try:
+            query = gql('''
+            query ($value: String!) {
+                allApplications (value: $value) {
+                    edges {
+                        node {
+                            id,
+                            value,
+                            label
+                        }
+                    }
+                }
+            }
+            ''')
+            variables = {"value":value}
+            if "pytest" in sys.modules:
+                output = self.gqlclient.execute(query,variables=variables)
+            else:
+                output = self.gqlclient.execute(query,variable_values=json.dumps(variables))
+            return True, output["data"]["allApplications"]["edges"]
         except:
             return False
 
