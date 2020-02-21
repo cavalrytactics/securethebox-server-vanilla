@@ -1,10 +1,22 @@
 from mongoengine import connect
 from bson import ObjectId
 from app_schema.course import schema
-from app_models.graphql.course import Course
-from app_models.graphql.category import Category
-from app_models.graphql.application import Application
-from app_models.graphql.service import Service
+from app_models.graphql.models import (
+    Application,
+    Configuration,
+    Credential,
+    Category,
+    Competency,
+    Course,
+    Question,
+    Report,
+    Scope,
+    Service,
+    Solution,
+    Subscription,
+    Topic,
+    User,
+)
 import os
 from gql import gql, Client
 from graphene.test import Client as TestClient
@@ -60,58 +72,6 @@ class GraphqlMongodbController():
         except:
             return False
 
-    def addCategory(self,payload):
-        try:
-            value = payload["value"]
-            label = payload["label"]
-            color = payload["color"]
-            status, output = self.getCategoryByValue(value)
-            if len(output) == 0:
-                model = Category(value=value, label=label, color=color)
-                model.save()
-                modelId = model.id
-            else:
-                modelId = output[0]["node"]["id"]
-            return True, modelId
-        except:
-            return False
-
-    def addService(self,payload):
-        try:
-            value = payload["value"]
-            status, output = self.getServiceByValue(value)
-            if len(output) == 0:
-                model = Service(value=value)
-                model.save()
-                modelId = model.id
-                
-            else:
-                modelId = output[0]["node"]["id"]
-            return True, modelId
-        except:
-            return False
-
-    def getAllCategories(self):
-        try:
-            query = gql('''
-            {
-                allCategories{
-                    edges {
-                        node {
-                            id,
-                            value,
-                            label,
-                            color
-                        }
-                    }
-                }
-            }
-            ''')
-            output = self.gqlclient.execute(query)
-            return True, output["data"]["allCategories"]["edges"]
-        except:
-            return False
-
     def getCategoryByValue(self,value):
         try:
             query = gql('''
@@ -130,8 +90,10 @@ class GraphqlMongodbController():
             variables = {"value":value}
             if "pytest" in sys.modules:
                 output = self.gqlclient.execute(query,variables=variables)
+                print(output)
             else:
                 output = self.gqlclient.execute(query,variable_values=json.dumps(variables))
+                print(output
             return True, output["data"]["allCategories"]["edges"]
         except:
             return False
@@ -184,63 +146,6 @@ class GraphqlMongodbController():
         except:
             return False
 
-    def getCourseBySlug(self,slug):
-        try:
-            query = gql('''
-            query ($slug: String!) {
-                allCourses (slug: $slug) {
-                    edges {
-                        node {
-                            id
-                            activeStep
-                            description
-                            length
-                            slug
-                            title
-                            totalSteps
-                            category {
-                                label
-                                value
-                            }
-                        }
-                    }
-                }
-            }
-            ''')
-            variables = {"slug":slug}
-            if "pytest" in sys.modules:
-                output = self.gqlclient.execute(query,variables=variables)
-            else:
-                output = self.gqlclient.execute(query,variable_values=json.dumps(variables))
-            return True, output
-        except:
-            return False
-
-    def getAllCourses(self):
-        try:
-            query = gql('''
-            {
-                allCourses{
-                    edges {
-                        node {
-                            id
-                            title
-                            activeStep
-                            description
-                            length
-                            slug
-                            totalSteps
-                        }
-                    }
-                }
-            }
-            ''')
-            output = self.gqlclient.execute(query)
-            print(output)
-            return True, output 
-        except:
-            return False
-
     def mutate(self):
         try:
             query = gql('''
@@ -265,32 +170,5 @@ class GraphqlMongodbController():
                 "slug": "this-is-slug",
                 "totalSteps": 0
             }
-        except:
-            return False
-
-    def addCourse(self, course_payload):
-        title = course_payload["title"]
-        activeStep = course_payload["activeStep"]
-        description = course_payload["description"]
-        length = course_payload["length"]
-        slug = course_payload["slug"]
-        totalSteps = course_payload["totalSteps"]
-        category = course_payload["category"]
-        try:
-            status, output = self.getCourseBySlug(slug)
-            if "pytest" in sys.modules:
-                if len(output["data"]["allCourses"]["edges"]) == 0:
-                    xcategory = Category(id=0, value="red_team", label="Red team", color="#2196f3")
-                    category = xcategory.save()
-                    print("CATEGORY:",category)
-                    course = Course(title=title, activeStep=activeStep, description=description, length=length, slug=slug, totalSteps=totalSteps, category=category)
-                    course.save()
-            else:
-                xcategory = Category(label="Red team",value="red_team")
-                category = xcategory.save()
-                print("CATEGORY:",category)
-                course = Course(title=title, activeStep=activeStep, description=description, length=length, slug=slug, totalSteps=totalSteps, category=category)
-                course.save()
-            return True, "good" 
         except:
             return False
