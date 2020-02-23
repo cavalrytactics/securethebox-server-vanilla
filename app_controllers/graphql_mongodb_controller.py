@@ -1,10 +1,7 @@
 from mongoengine import connect
 from bson import ObjectId
-from app_schema.course import schema
-from app_models.graphql.course import Course
-from app_models.graphql.category import Category
-from app_models.graphql.application import Application
-from app_models.graphql.service import Service
+from app_schema.schema import schema
+from app_models.graphql.models import Course, Category, Application, Service
 import os
 from gql import gql, Client
 from graphene.test import Client as TestClient

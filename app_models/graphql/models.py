@@ -15,13 +15,45 @@ from mongoengine.fields import (
 
 class Subscription(Document):
     meta = {"collection": "subscriptions"}
+    ID = ObjectIdField()
     stripeCustomerPlan = StringField()
     stripeCustomerId = StringField()
     stripeCustomerSubscriptionId = StringField()
     active = BooleanField()
 
+class Rank(Document):
+    meta = {"collection": "ranks"}
+    ID = ObjectIdField()
+    coursesComplete = IntField()
+    flagsObtained = IntField()
+    position = IntField()
+    
+class User(Document):
+    meta = {"collection": "users"}
+    ID = ObjectIdField()
+    manager = BooleanField()
+    email = EmailField()
+    level = IntField()
+    rank = ReferenceField(Rank)
+    subscription = ReferenceField(Subscription)
+    admin = BooleanField()
+    recruiter = BooleanField()
+    loggedIn = BooleanField()
+
+class Team(Document):
+    meta = {"collection": "teams"}
+    ID = ObjectIdField()
+    members = ListField(ReferenceField(User))
+
+class University(Document):
+    meta = {"collection": "universities"}
+    ID = ObjectIdField()
+    team = ReferenceField(Team)
+    domain = StringField()
+
 class Job(Document):
     meta = {"collection": "jobs"}
+    ID = ObjectIdField()
     description = StringField()
     minimumRank = IntField()
     responsibilities = StringField()
@@ -33,36 +65,9 @@ class Job(Document):
 
 class Company(Document):
     meta = {"collection": "companies"}
+    ID = ObjectIdField()
     managers = ListField(ReferenceField(User))
     jobs = ListField(ReferenceField(Job))
-
-class Rank(Document):
-    meta = {"collection": "ranks"}
-    coursesComplete = IntField()
-    flagsObtained = IntField()
-    position = IntField()
-
-class University(Document):
-    meta = {"collection": "universities"}
-    team = ReferenceField(Team)
-    domain = StringField()
-    
-class Team(Document):
-    meta = {"collection": "teams"}
-    members = ListField(ReferenceField(User))
-
-class User(Document):
-    meta = {"collection": "users"}
-    manager = BooleanField()
-    email = EmailField()
-    level = IntField()
-    rank = ReferenceField(Rank)
-    subscription = ReferenceField(Subscription)
-    admin = BooleanField()
-    recruiter = BooleanField()
-    team = ReferenceField(Team)
-    courses = ListField(ReferenceField(Course))
-    loggedIn = BooleanField()
 
 class Credential(Document):
     meta = {"collection": "credentials"}
@@ -82,18 +87,21 @@ class Configuration(Document):
 class Competency(Document):
     meta = {"collection": "competencies"}
     ID = ObjectIdField()
+    label = StringField()
     value = StringField()
 
 class Topic(Document):
     meta = {"collection": "topics"}
     ID = ObjectIdField()
     competency = ReferenceField(Competency)
+    label = StringField()
     value = StringField()
 
 class Scope(Document):
     meta = {"collection": "scopes"}
     ID = ObjectIdField()
     topic = ReferenceField(Topic)
+    label = StringField()
     value = StringField()
 
 class Solution(Document):
@@ -165,7 +173,7 @@ class Cluster(Document):
     status = StringField()
     containers = ListField(ReferenceField(Container))
 
-class Container(Document):
+class Step(Document):
     meta = {"collection": "steps"}
     ID = ObjectIdField()
     title = StringField()

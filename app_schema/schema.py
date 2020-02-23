@@ -3,34 +3,52 @@ from graphene.relay import Node
 from graphene_mongo.fields import MongoengineConnectionField
 from app_models.graphql.models import (
     Application,
-    Configuration,
-    Credential,
     Category,
+    Cluster,
+    Company,
     Competency,
+    Configuration,
+    Container,
     Course,
+    Credential,
+    Dummy,
+    Job,
+    Metric,
     Question,
     Report,
+    Rank,
     Scope,
     Service,
     Solution,
     Subscription,
+    Team,
     Topic,
+    University,
     User,
 )
 from app_types.types import (
     ApplicationType,
-    ConfigurationType,
-    CredentialType,
     CategoryType,
+    ClusterType,
+    CompanyType,
     CompetencyType,
+    ConfigurationType,
+    ContainerType,
     CourseType,
+    CredentialType,
+    DummyType,
+    JobType,
+    MetricType,
     QuestionType,
+    RankType,
     ReportType,
     ScopeType,
     ServiceType,
     SolutionType,
     SubscriptionType,
+    TeamType,
     TopicType,
+    UniversityType,
     UserType,
 )
 
@@ -44,15 +62,25 @@ from app_mutations.categories.mutations import (
     UpdateCategoryMutation,
     DeleteCategoryMutation,
 )
-from app_mutations.categories.mutations import (
-    CreateCategoryMutation,
-    UpdateCategoryMutation,
-    DeleteCategoryMutation,
+from app_mutations.clusters.mutations import (
+    CreateClusterMutation,
+    UpdateClusterMutation,
+    DeleteClusterMutation,
+)
+from app_mutations.companies.mutations import (
+    CreateCompanyMutation,
+    UpdateCompanyMutation,
+    DeleteCompanyMutation,
 )
 from app_mutations.competencies.mutations import (
     CreateCompetencyMutation,
     UpdateCompetencyMutation,
     DeleteCompetencyMutation,
+)
+from app_mutations.containers.mutations import (
+    CreateContainerMutation,
+    UpdateContainerMutation,
+    DeleteContainerMutation,
 )
 from app_mutations.configurations.mutations import (
     CreateConfigurationMutation,
@@ -69,10 +97,30 @@ from app_mutations.credentials.mutations import (
     UpdateCredentialMutation,
     DeleteCredentialMutation,
 )
+from app_mutations.dummies.mutations import (
+    CreateDummyMutation,
+    UpdateDummyMutation,
+    DeleteDummyMutation,
+)
+from app_mutations.jobs.mutations import (
+    CreateJobMutation,
+    UpdateJobMutation,
+    DeleteJobMutation,
+)
+from app_mutations.metrics.mutations import (
+    CreateMetricMutation,
+    UpdateMetricMutation,
+    DeleteMetricMutation,
+)
 from app_mutations.questions.mutations import (
     CreateQuestionMutation,
     UpdateQuestionMutation,
     DeleteQuestionMutation,
+)
+from app_mutations.ranks.mutations import (
+    CreateRankMutation,
+    UpdateRankMutation,
+    DeleteRankMutation,
 )
 from app_mutations.reports.mutations import (
     CreateReportMutation,
@@ -101,10 +149,20 @@ from app_mutations.subscriptions.mutations import (
     UpdateSubscriptionMutation,
     DeleteSubscriptionMutation,
 )
+from app_mutations.teams.mutations import (
+    CreateTeamMutation,
+    UpdateTeamMutation,
+    DeleteTeamMutation,
+)
 from app_mutations.topics.mutations import (
     CreateTopicMutation,
     UpdateTopicMutation,
     DeleteTopicMutation,
+)
+from app_mutations.universities.mutations import (
+    CreateUniversityMutation,
+    UpdateUniversityMutation,
+    DeleteUniversityMutation,
 )
 from app_mutations.users.mutations import (
     CreateUserMutation,
@@ -114,129 +172,203 @@ from app_mutations.users.mutations import (
 
 class Mutations(graphene.ObjectType):
     create_application = CreateApplicationMutation.Field()
-    update_application = UpdateApplicationMutation.Field()
-    delete_application = DeleteApplicationMutation.Field()
     create_category = CreateCategoryMutation.Field()
-    update_category = UpdateCategoryMutation.Field()
-    delete_category = DeleteCategoryMutation.Field()
+    create_cluster = CreateClusterMutation.Field()
+    create_company = CreateCompanyMutation.Field()
     create_competency = CreateCompetencyMutation.Field()
-    update_competency = UpdateCompetencyMutation.Field()
-    delete_competency = DeleteCompetencyMutation.Field()
+    create_container = CreateContainerMutation.Field()
     create_configuration = CreateConfigurationMutation.Field()
-    update_configuration = UpdateConfigurationMutation.Field()
-    delete_configuration = DeleteConfigurationMutation.Field()
     create_course = CreateCourseMutation.Field()
-    update_course = UpdateCourseMutation.Field()
-    delete_course = DeleteCourseMutation.Field()
     create_credential = CreateCredentialMutation.Field()
-    update_credential = UpdateCredentialMutation.Field()
-    delete_credential = DeleteCredentialMutation.Field()
+    create_dummy = CreateDummyMutation.Field()
+    create_job = CreateJobMutation.Field()
+    create_metric = CreateMetricMutation.Field()
     create_question = CreateQuestionMutation.Field()
-    update_question = UpdateQuestionMutation.Field()
-    delete_question = DeleteQuestionMutation.Field()
+    create_rank = CreateRankMutation.Field()
     create_report = CreateReportMutation.Field()
-    update_report = UpdateReportMutation.Field()
-    delete_report = DeleteReportMutation.Field()
     create_scope = CreateScopeMutation.Field()
+    create_service = CreateServiceMutation.Field()
+    create_solution = CreateSolutionMutation.Field()
+    create_subscription = CreateSubscriptionMutation.Field()
+    create_team = CreateTeamMutation.Field()
+    create_topic = CreateTopicMutation.Field()
+    create_university = CreateUniversityMutation.Field()
+    create_user = CreateUserMutation.Field()
+
+    update_application = UpdateApplicationMutation.Field()
+    update_cluster = UpdateClusterMutation.Field()
+    update_company= UpdateCompanyMutation.Field()
+    update_category = UpdateCategoryMutation.Field()
+    update_competency = UpdateCompetencyMutation.Field()
+    update_configuration = UpdateConfigurationMutation.Field()
+    update_container = UpdateContainerMutation.Field()
+    update_course = UpdateCourseMutation.Field()
+    update_credential = UpdateCredentialMutation.Field()
+    update_dummy = UpdateDummyMutation.Field()
+    update_job = UpdateJobMutation.Field()
+    update_metric = UpdateMetricMutation.Field()
+    update_question = UpdateQuestionMutation.Field()
+    update_rank = UpdateRankMutation.Field()
+    update_report = UpdateReportMutation.Field()
     update_scope = UpdateScopeMutation.Field()
-    delete_scope = DeleteScopeMutation.Field()
-    create_service= CreateServiceMutation.Field()
     update_service = UpdateServiceMutation.Field()
-    delete_service = DeleteServiceMutation.Field()
     update_service_add_application = UpdateServiceAddApplicationMutation.Field()
     update_service_delete_application = UpdateServiceDeleteApplicationMutation.Field()
-    create_solution = CreateSolutionMutation.Field()
     update_solution = UpdateSolutionMutation.Field()
-    delete_solution = DeleteSolutionMutation.Field()
-    create_subscription = CreateSubscriptionMutation.Field()
     update_subscription = UpdateSubscriptionMutation.Field()
-    delete_subscription = DeleteSubscriptionMutation.Field()
-    create_topic = CreateTopicMutation.Field()
+    update_team = UpdateTeamMutation.Field()
     update_topic = UpdateTopicMutation.Field()
-    delete_topic = DeleteTopicMutation.Field()
-    create_user = CreateUserMutation.Field()
+    update_university = UpdateUniversityMutation.Field()
     update_user = UpdateUserMutation.Field()
+
+    delete_application = DeleteApplicationMutation.Field()
+    delete_category = DeleteCategoryMutation.Field()
+    delete_cluster = DeleteClusterMutation.Field()
+    delete_company = DeleteCompanyMutation.Field()
+    delete_competency = DeleteCompetencyMutation.Field()
+    delete_configuration = DeleteConfigurationMutation.Field()
+    delete_container = DeleteContainerMutation.Field()
+    delete_course = DeleteCourseMutation.Field()
+    delete_credential = DeleteCredentialMutation.Field()
+    delete_dummy = DeleteDummyMutation.Field()
+    delete_job = DeleteJobMutation.Field()
+    delete_metric = DeleteMetricMutation.Field()
+    delete_question = DeleteQuestionMutation.Field()
+    delete_rank = DeleteRankMutation.Field()
+    delete_report = DeleteReportMutation.Field()
+    delete_scope = DeleteScopeMutation.Field()
+    delete_service = DeleteServiceMutation.Field()
+    delete_solution = DeleteSolutionMutation.Field()
+    delete_subscription = DeleteSubscriptionMutation.Field()
+    delete_team = DeleteTeamMutation.Field()
+    delete_topic = DeleteTopicMutation.Field()
+    delete_university = DeleteUniversityMutation.Field()
     delete_user = DeleteUserMutation.Field()
 
 class Query(graphene.ObjectType):
     node = Node.Field()
 
     applications = MongoengineConnectionField(ApplicationType)
-    configurations = MongoengineConnectionField(ConfigurationType)
-    credentials = MongoengineConnectionField(CredentialType)
     categories = MongoengineConnectionField(CategoryType)
+    clusters = MongoengineConnectionField(ClusterType)
+    companies = MongoengineConnectionField(CompanyType)
     competencies = MongoengineConnectionField(CompetencyType)
+    configurations = MongoengineConnectionField(ConfigurationType)
+    containers = MongoengineConnectionField(ContainerType)
     courses = MongoengineConnectionField(CourseType)
+    credentials = MongoengineConnectionField(CredentialType)
+    dummies = MongoengineConnectionField(DummyType)
+    jobs = MongoengineConnectionField(JobType)
+    metrics = MongoengineConnectionField(MetricType)
     questions = MongoengineConnectionField(QuestionType)
+    ranks = MongoengineConnectionField(RankType)
     reports = MongoengineConnectionField(ReportType)
     scopes = MongoengineConnectionField(ScopeType)
     services = MongoengineConnectionField(ServiceType)
     solutions = MongoengineConnectionField(SolutionType)
     subscriptions = MongoengineConnectionField(SubscriptionType)
+    teams = MongoengineConnectionField(TeamType)
     topics = MongoengineConnectionField(TopicType)
+    universities = MongoengineConnectionField(UniversityType)
     users = MongoengineConnectionField(UserType)
 
     applications_list = graphene.List(ApplicationType)
+    configurations_list = graphene.List(ConfigurationType)
+    clusters_list = graphene.List(ClusterType)
+    companies_list = graphene.List(CompanyType)
+    containers_list = graphene.List(ContainerType)
     configurations_list = graphene.List(ConfigurationType)
     credentials_list = graphene.List(CredentialType)
     categories_list = graphene.List(CategoryType)
     competencies_list = graphene.List(CompetencyType)
     courses_list = graphene.List(CourseType)
+    dummies_list = graphene.List(DummyType)
+    jobs_list = graphene.List(JobType)
+    metrics_list = graphene.List(MetricType)
     questions_list = graphene.List(QuestionType)
+    ranks_list = graphene.List(RankType)
     reports_list = graphene.List(ReportType)
     scopes_list = graphene.List(ScopeType)
     services_list = graphene.List(ServiceType)
     solutions_list = graphene.List(SolutionType)
     subscriptions_list = graphene.List(SubscriptionType)
+    teams_list = graphene.List(TeamType)
     topics_list = graphene.List(TopicType)
+    universities_list = graphene.List(UniversityType)
     users_list = graphene.List(UserType)
     
     def resolve_applications_list(self, info):
-        return Applications.objects.all()
+        return Application.objects.all()
+    def resolve_clusters_list(self, info):
+        return Cluster.objects.all()
+    def resolve_companies_list(self, info):
+        return Company.objects.all()
     def resolve_configurations_list(self, info):
-        return Configurations.objects.all()
+        return Configuration.objects.all()
     def resolve_credentials_list(self, info):
-        return Credentials.objects.all()
+        return Credential.objects.all()
     def resolve_categories_list(self, info):
-        return Categories.objects.all()
+        return Category.objects.all()
     def resolve_competencies_list(self, info):
-        return Competencies.objects.all()
+        return Competency.objects.all()
+    def resolve_containers_list(self, info):
+        return Contianer.objects.all()
     def resolve_courses_list(self, info):
-        return Courses.objects.all()
+        return Course.objects.all()
+    def resolve_dummies_list(self, info):
+        return Dummy.objects.all()
+    def resolve_jobs_list(self, info):
+        return Job.objects.all()
+    def resolve_metrics_list(self, info):
+        return Metric.objects.all()
     def resolve_questions_list(self, info):
-        return Questions.objects.all()
+        return Question.objects.all()
+    def resolve_ranks_list(self, info):
+        return Rank.sobjects.all()
     def resolve_reports_list(self, info):
-        return Reports.objects.all()
+        return Report.objects.all()
     def resolve_scopes_list(self, info):
-        return Scopes.objects.all()
+        return Scope.objects.all()
     def resolve_services_list(self, info):
-        return Services.objects.all()
+        return Service.objects.all()
     def resolve_solutions_list(self, info):
-        return Solutions.objects.all()
+        return Solution.objects.all()
     def resolve_subscriptions_list(self, info):
-        return Subscriptions.objects.all()
+        return Subscription.objects.all()
+    def resolve_teams_list(self, info):
+        return Team.objects.all()
     def resolve_topics_list(self, info):
-        return Topics.objects.all()
+        return Topic.objects.all()
+    def resolve_universities_list(self, info):
+        return University.objects.all()
     def resolve_users_list(self, info):
-        return Users.objects.all()
+        return User.objects.all()
 
 schema = graphene.Schema(
     query=Query, 
-    mutation=Mutations, 
+    mutation=Mutations,
     types=[
         ApplicationType,
-        ConfigurationType,
-        CredentialType,
+        ClusterType,
         CategoryType,
         CompetencyType,
+        ConfigurationType,
+        ContainerType,
         CourseType,
+        CredentialType,
+        DummyType,
+        JobType,
+        MetricType,
         QuestionType,
+        RankType,
         ReportType,
         ScopeType,
         ServiceType,
         SolutionType,
         SubscriptionType,
+        TeamType,
         TopicType,
         UserType,
+        UniversityType,
         ]
     )

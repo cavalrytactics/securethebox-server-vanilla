@@ -37,3 +37,12 @@
 
 - how did you get your engineers?
   - paid contractor 200k LOL
+
+
+# Make $ by making challenges
+
+
+https://www.twitch.tv/videos/556059226
+- start @ 3:37:00
+- https://www.twitch.tv/icpclive
+

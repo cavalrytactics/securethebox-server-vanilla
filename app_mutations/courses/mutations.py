@@ -4,12 +4,11 @@ from app_types.types import CourseType
 
 class CourseInput(graphene.InputObjectType):
     id = graphene.ID()
+    title = graphene.String()
+    description = graphene.String()
     report = graphene.ID()
     category = graphene.ID()
     cluster = graphene.ID()
-    title = graphene.String()
-    description = graphene.String()
-    steps = graphene.List()
     status = graphene.String()
     activeStep = graphene.Int()
     length = graphene.Int()

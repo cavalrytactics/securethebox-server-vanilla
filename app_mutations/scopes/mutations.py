@@ -4,18 +4,31 @@ from app_types.types import ScopeType
 
 class ScopeInput(graphene.InputObjectType):
     id = graphene.ID()
-    name = graphene.String()
+    label = graphene.String()
     value = graphene.String()
 
 class CreateScopeMutation(graphene.Mutation):
     scope = graphene.Field(ScopeType)
+
     class Arguments:
         scope_data = ScopeInput(required=True)
+
+    @staticmethod
+    def check_exists(value):
+        allObjects = Scope.objects.all()
+        for item in allObjects:
+            if item.value == value:
+                return True
+        return False
+
     def mutate(self, info, scope_data=None):
+        exists = CreateScopeMutation.check_exists(scope_data.value)
         scope = Scope(
-            value=scope_data.value
+            value=scope_data.value,
+            label=scope_data.label
         )
-        scope.save()
+        if exists == False:
+            scope.save()
         return CreateScopeMutation(scope=scope)
 
 class UpdateScopeMutation(graphene.Mutation):

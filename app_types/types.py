@@ -2,23 +2,44 @@ from graphene import relay
 from graphene_mongo import MongoengineObjectType
 from app_models.graphql.models import (
     Application, 
-    Configuration, 
-    Credential, 
     Category, 
+	Cluster,
+	Company,
     Competency, 
-    Course, 
+	Container,
+    Configuration, 
+	Course, 
+	Credential, 
+	Dummy,
+	Job,
+	Metric,
     Question,
+	Rank,
     Report, 
     Scope, 
     Service, 
     Solution, 
     Subscription, 
+	Team,
     Topic, 
+	University,
     User)
 
 class ApplicationType(MongoengineObjectType):
 	class Meta:
 		model = Application
+		interfaces = (relay.Node,)
+class CategoryType(MongoengineObjectType):
+	class Meta:
+		model = Category
+		interfaces = (relay.Node,)
+class ClusterType(MongoengineObjectType):
+	class Meta:
+		model = Cluster
+		interfaces = (relay.Node,)
+class CompanyType(MongoengineObjectType):
+	class Meta:
+		model = Company
 		interfaces = (relay.Node,)
 class ConfigurationType(MongoengineObjectType):
 	class Meta:
@@ -28,21 +49,37 @@ class CredentialType(MongoengineObjectType):
 	class Meta:
 		model = Credential
 		interfaces = (relay.Node,)
-class CategoryType(MongoengineObjectType):
-	class Meta:
-		model = Category
-		interfaces = (relay.Node,)
 class CompetencyType(MongoengineObjectType):
 	class Meta:
 		model = Competency
+		interfaces = (relay.Node,)
+class ContainerType(MongoengineObjectType):
+	class Meta:
+		model = Container
 		interfaces = (relay.Node,)
 class CourseType(MongoengineObjectType):
 	class Meta:
 		model = Course
 		interfaces = (relay.Node,)
+class DummyType(MongoengineObjectType):
+	class Meta:
+		model = Dummy
+		interfaces = (relay.Node,)
+class JobType(MongoengineObjectType):
+	class Meta:
+		model = Job
+		interfaces = (relay.Node,)
+class MetricType(MongoengineObjectType):
+	class Meta:
+		model = Metric
+		interfaces = (relay.Node,)
 class QuestionType(MongoengineObjectType):
 	class Meta:
 		model = Question
+		interfaces = (relay.Node,)
+class RankType(MongoengineObjectType):
+	class Meta:
+		model = Rank
 		interfaces = (relay.Node,)
 class ReportType(MongoengineObjectType):
 	class Meta:
@@ -64,9 +101,17 @@ class SubscriptionType(MongoengineObjectType):
 	class Meta:
 		model = Subscription
 		interfaces = (relay.Node,)
+class TeamType(MongoengineObjectType):
+	class Meta:
+		model = Team
+		interfaces = (relay.Node,)
 class TopicType(MongoengineObjectType):
 	class Meta:
 		model = Topic
+		interfaces = (relay.Node,)
+class UniversityType(MongoengineObjectType):
+	class Meta:
+		model = University
 		interfaces = (relay.Node,)
 class UserType(MongoengineObjectType):
 	class Meta:
