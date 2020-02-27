@@ -129,6 +129,30 @@ def test_getGoogleKubernetesClusterCredentials():
     c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
     assert c.getGoogleKubernetesClusterCredentials() == True
 
+def test_createExternalDNSManagedZones():
+    c.setCurrentDirectory()
+    for var in pytest.globalData["environmentVariablesList"]:
+        c.setEnvironmentVariable(var)
+    c.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
+    c.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
+    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
+    c.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
+    c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
+    c.getGoogleKubernetesClusterCredentials()
+    assert c.createExternalDNSManagedZones() == True
+
+def test_deleteExternalDNSManagedZones():
+    c.setCurrentDirectory()
+    for var in pytest.globalData["environmentVariablesList"]:
+        c.setEnvironmentVariable(var)
+    c.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
+    c.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
+    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
+    c.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
+    c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
+    c.getGoogleKubernetesClusterCredentials()
+    assert c.deleteExternalDNSManagedZones() == True
+
 def test_manageKubernetesIngressPod_apply():
     for var in pytest.globalData["environmentVariablesList"]:
         c.setEnvironmentVariable(var)
