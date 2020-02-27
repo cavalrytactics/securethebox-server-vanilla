@@ -31,9 +31,9 @@ spec:
           - name: INSECURE_COOKIE
             value: "true"
           - name: COOKIE_DOMAINS
-            value: "securethebox.us,us-west1-a.securethebox.us,jenkins-{userName}.us-west1-a.securethebox.us,gitlab-{userName}.us-west1-a.securethebox.us"
+            value: "securethebox.us,{clusterName}.securethebox.us,jenkins-{userName}.{clusterName}.securethebox.us,gitlab-{userName}.{clusterName}.securethebox.us"
           - name: DOMAINS
-            value: "securethebox.us,us-west1-a.securethebox.us,jenkins-{userName}.us-west1-a.securethebox.us,gitlab-{userName}.us-west1-a.securethebox.us"
+            value: "securethebox.us,{clusterName}.securethebox.us,jenkins-{userName}.{clusterName}.securethebox.us,gitlab-{userName}.{clusterName}.securethebox.us"
           - name: AUTH_HOST
             value: "auth.securethebox.us"
           - name: DEFAULT_ACTION
