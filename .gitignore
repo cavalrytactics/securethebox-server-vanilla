@@ -14,6 +14,7 @@ dev-env/code-server/machineid
 dev-env/code-server/User/Backups/
 dev-env/code-server/User/snippets/
 dev-env/code-server/User/state/
+.DS_Store
 
 # Logs
 logs
