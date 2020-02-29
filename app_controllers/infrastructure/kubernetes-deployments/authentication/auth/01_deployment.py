@@ -39,7 +39,7 @@ spec:
           - name: DEFAULT_ACTION
             value: "allow"
           - name: WHITELIST
-            value: "{emailAddress},service-account@securethebox.iam.gserviceaccount.com"
+            value: "{emailAddress}"
         ports:
           - containerPort: 4181
             protocol: TCP

@@ -1,4 +1,5 @@
 from app_controllers.kubernetes_controller import KubernetesController
+from app_controllers.clouddns_controller import CloudDnsController
 import json
 import os
 import pytest
@@ -7,6 +8,7 @@ import time
 pytest.globalData = []
 
 c = KubernetesController()
+x = CloudDnsController()
 
 def test_loadGlobalData():
     with open(str(os.getcwd())+"/tests/globalData.json", "r") as f:
@@ -109,6 +111,34 @@ def test_setGoogleKubernetesProject():
     assert c.setGoogleProjectId(pytest.globalData["googleProjectId"])
     assert c.setGoogleKubernetesProject() == True
 
+def test_deleteChildExternalDNSManagedZones():
+    x.setParentDomain(pytest.globalData["googleCloudDnsParentDomain"])
+    x.setSubDomainPrefix(pytest.globalData["googleCloudDnsSubDomainPrefix"])
+    x.setParentManagedZone(pytest.globalData["googleCloudDnsParentManagedZone"])
+    x.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
+    assert x.deleteChildExternalDNSManagedZones() == True
+
+def test_createChildExternalDNSManagedZones():
+    x.setParentDomain(pytest.globalData["googleCloudDnsParentDomain"])
+    x.setSubDomainPrefix(pytest.globalData["googleCloudDnsSubDomainPrefix"])
+    x.setParentManagedZone(pytest.globalData["googleCloudDnsParentManagedZone"])
+    x.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
+    assert x.createChildExternalDNSManagedZones() == True
+
+def test_deleteParentDNSManagedZone():
+    x.setParentDomain(pytest.globalData["googleCloudDnsParentDomain"])
+    x.setSubDomainPrefix(pytest.globalData["googleCloudDnsSubDomainPrefix"])
+    x.setParentManagedZone(pytest.globalData["googleCloudDnsParentManagedZone"])
+    x.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
+    assert x.deleteParentDNSManagedZone() == True
+
+def test_createParentDNSManagedZone():
+    x.setParentDomain(pytest.globalData["googleCloudDnsParentDomain"])
+    x.setSubDomainPrefix(pytest.globalData["googleCloudDnsSubDomainPrefix"])
+    x.setParentManagedZone(pytest.globalData["googleCloudDnsParentManagedZone"])
+    x.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
+    assert x.createParentDNSManagedZone() == True
+
 def test_createGoogleKubernetesCluster():
     c.setCurrentDirectory()
     c.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
@@ -130,7 +160,31 @@ def test_getGoogleKubernetesClusterCredentials():
     c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
     assert c.getGoogleKubernetesClusterCredentials() == True
 
+def test_createClusterRoleBinding():
+    for var in pytest.globalData["environmentVariablesList"]:
+        c.setEnvironmentVariable(var)
+    c.setCurrentDirectory()
+    c.setServiceName(pytest.globalData["serviceName_dns"])
+    c.setUserName(pytest.globalData["userName"])
+    c.setKubectlAction(pytest.globalData["kubectlAction_apply"])
+    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
+    assert c.createClusterRoleBinding() == True
+
+
+def test_manageKubernetesDnsPod_apply():
+    for var in pytest.globalData["environmentVariablesList"]:
+        c.setEnvironmentVariable(var)
+    c.setCurrentDirectory()
+    c.setServiceName(pytest.globalData["serviceName_dns"])
+    c.setUserName(pytest.globalData["userName"])
+    c.setKubectlAction(pytest.globalData["kubectlAction_apply"])
+    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
+    assert c.manageKubernetesDnsPod() == True
+
 def test_manageKubernetesIngressPod_apply():
+    for x in range(30):
+        time.sleep(1)
+        print(x)
     for var in pytest.globalData["environmentVariablesList"]:
         c.setEnvironmentVariable(var)
     c.setCurrentDirectory()
@@ -159,29 +213,6 @@ def test_manageKubernetesAuthenticationPod_apply():
         c.setKubectlAction(pytest.globalData["kubectlAction_apply"])
         c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
         assert c.manageKubernetesAuthenticationPod() == True
-
-def test_manageKubernetesDnsPod_apply():
-    for var in pytest.globalData["environmentVariablesList"]:
-        c.setEnvironmentVariable(var)
-    c.setCurrentDirectory()
-    c.setServiceName(pytest.globalData["serviceName_dns"])
-    c.setUserName(pytest.globalData["userName"])
-    c.setKubectlAction(pytest.globalData["kubectlAction_apply"])
-    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
-    assert c.manageKubernetesDnsPod() == True
-
-def test_createExternalDNSManagedZones():
-    c.setCurrentDirectory()
-    for var in pytest.globalData["environmentVariablesList"]:
-        c.setEnvironmentVariable(var)
-    c.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
-    c.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
-    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
-    c.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
-    c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
-    c.getGoogleKubernetesClusterCredentials()
-    c.deleteExternalDNSManagedZones()
-    assert c.createExternalDNSManagedZones() == True
 
 def test_manageKubernetesServicePod_apply():
     for var in pytest.globalData["environmentVariablesList"]:
@@ -214,6 +245,12 @@ def test_getKubernetesPodStatus():
         value, podStatus = c.getkubernetesPodStatus()
         assert value == True
 
+################################################################################
+#
+# COMMENT ALL BELOW TO NOT DELETE DEPLOYMENT
+#
+################################################################################
+
 def test_manageKubernetesServicePod_delete():
     for var in pytest.globalData["environmentVariablesList"]:
         c.setEnvironmentVariable(var)
@@ -236,16 +273,6 @@ def test_manageKubernetesAuthenticationPod_delete():
         c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
         assert c.manageKubernetesAuthenticationPod() == True
 
-def test_manageKubernetesDnsPod_delete():
-    for var in pytest.globalData["environmentVariablesList"]:
-        c.setEnvironmentVariable(var)
-    c.setCurrentDirectory()
-    c.setServiceName(pytest.globalData["serviceName_dns"])
-    c.setUserName(pytest.globalData["userName"])
-    c.setKubectlAction(pytest.globalData["kubectlAction_delete"])
-    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
-    assert c.manageKubernetesDnsPod() == True
-
 def test_manageKubernetesStoragePod_delete():
     for var in pytest.globalData["environmentVariablesList"]:
         c.setEnvironmentVariable(var)
@@ -265,17 +292,25 @@ def test_manageKubernetesIngressPod_delete():
     c.selectGoogleKubernetesClusterContext()
     assert c.manageKubernetesIngressPod() == True
 
-def test_deleteExternalDNSManagedZones():
-    c.setCurrentDirectory()
+def test_manageKubernetesDnsPod_delete():
     for var in pytest.globalData["environmentVariablesList"]:
         c.setEnvironmentVariable(var)
-    c.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
-    c.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
+    c.setCurrentDirectory()
+    c.setServiceName(pytest.globalData["serviceName_dns"])
+    c.setUserName(pytest.globalData["userName"])
+    c.setKubectlAction(pytest.globalData["kubectlAction_delete"])
     c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
-    c.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
-    c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
-    c.getGoogleKubernetesClusterCredentials()
-    assert c.deleteExternalDNSManagedZones() == True
+    assert c.manageKubernetesDnsPod() == True
+
+def test_deleteClusterRoleBinding():
+    for var in pytest.globalData["environmentVariablesList"]:
+        c.setEnvironmentVariable(var)
+    c.setCurrentDirectory()
+    c.setServiceName(pytest.globalData["serviceName_dns"])
+    c.setUserName(pytest.globalData["userName"])
+    c.setKubectlAction(pytest.globalData["kubectlAction_apply"])
+    c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
+    assert c.deleteClusterRoleBinding() == True
 
 def test_deleteGoogleKubernetesCluster():
     c.setCurrentDirectory()

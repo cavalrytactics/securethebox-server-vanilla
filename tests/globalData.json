@@ -47,5 +47,9 @@
     "googleCloudRunProjectId":"securethebox-client",
     "googleCloudRunImageName":"securethebox-server",
     "googleCloudRunRegion":"us-central1",
-    "googleCloudRunPlatform":"managed"
+    "googleCloudRunPlatform":"managed",
+    "googleCloudDnsParentDomain":"securethebox.us",
+    "googleCloudDnsParentManagedZone":"securethebox-us",
+    "googleCloudDnsSubDomainPrefix":"us-central1-a",
+    "googleCloudDnsSubManagedZonePrefix":"us-central1-a"
 }

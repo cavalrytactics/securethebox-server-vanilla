@@ -339,15 +339,15 @@ class KubernetesController():
                 --machine-type \"n1-standard-1\" \
                 --image-type \"COS\" \
                 --disk-type \"pd-standard\" \
-                --disk-size \"30\" \
+                --disk-size \"375\" \
                 --scopes \"https://www.googleapis.com/auth/devstorage.read_only\",\"https://www.googleapis.com/auth/logging.write\",\"https://www.googleapis.com/auth/monitoring\",\"https://www.googleapis.com/auth/servicecontrol\",\"https://www.googleapis.com/auth/service.management.readonly\",\"https://www.googleapis.com/auth/ndev.clouddns.readwrite\",\"https://www.googleapis.com/auth/trace.append\" \
-                --num-nodes \"5\" \
+                --num-nodes \"6\" \
                 --enable-ip-alias \
                 --enable-stackdriver-kubernetes \
                 --addons \"HorizontalPodAutoscaling\",\"HttpLoadBalancing\",\"CloudRun\" \
                 --network \"projects/{self.googleProjectId}/global/networks/default\" \
                 --subnetwork \"projects/{self.googleProjectId}/regions/{self.googleKubernetesComputeRegion}/subnetworks/default\" \
-                --default-max-pods-per-node \"8\""], shell=True).wait()
+                --default-max-pods-per-node \"25\""], shell=True).wait()
             return True
         except:
             return False
@@ -364,43 +364,16 @@ class KubernetesController():
         except:
             return False
 
-    def createExternalDNSManagedZones(self):
+    def createClusterRoleBinding(self):
         try:
-            # gcloud dns managed-zones create securethebox-us --dns-name securethebox.us. --description "Automatically managed zone by kubernetes.io/external-dns"
-            # gcloud dns managed-zones create us-central1-a-securethebox-us --dns-name us-central1-a.securethebox.us. --description "Automatically managed zone by kubernetes.io/external-dns"
-            # gcloud dns record-sets list --zone "us-central1-a-securethebox-us" --name "us-central1-a.securethebox.us." --type NS
-            # gcloud dns record-sets transaction start --zone securethebox-us
-            # gcloud dns record-sets transaction add ns-cloud-e{1..4}.googledomains.com. --name us-central1-a.securethebox.us. --ttl 300 --type NS --zone securethebox-us
-            # gcloud dns record-sets transaction execute --zone securethebox-us
-
-            # NEED TO MAKE GOOGLE THE DNS PROVIDER!!!!
-            subprocess.Popen([f"kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com"], shell=True).wait()
-            # subprocess.Popen([f"gcloud dns managed-zones create \"securethebox-us\" --dns-name \"securethebox.us.\" --description \"Parent Zone\" >> /dev/null 2>&1"], shell=True).wait()
-            subprocess.Popen([f"gcloud dns managed-zones create \"us-central1-a-securethebox-us\" --dns-name \"us-central1-a.securethebox.us.\" --description \"Automatically managed zone by kubernetes.io/external-dns\" >> /dev/null 2>&1"], shell=True).wait()
-            command = ["gcloud","dns","record-sets","list","--zone","us-central1-a-securethebox-us","--name","us-central1-a.securethebox.us.","--type","NS"]
-            out = check_output(command)
-            dnsRecord = out.decode("utf-8").splitlines()[1]
-            possible = ["ns-cloud-a1","ns-cloud-b1","ns-cloud-c1","ns-cloud-d1","ns-cloud-e1","ns-cloud-f1"]
-            for x in possible:
-                if x in dnsRecord:
-                    subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"securethebox-us\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction add {x[:-1]}{{1..4}}.googledomains.com. --name \"us-central1-a.securethebox.us.\" --ttl 300 --type NS --zone \"securethebox-us\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"securethebox-us\""], shell=True).wait()
+            subprocess.Popen([f"kubectl create clusterrolebinding external-dns --clusterrole=cluster-admin --user=cavalrytacticsinc@gmail.com"], shell=True).wait()
             return True
         except:
             return False
 
-    def deleteExternalDNSManagedZones(self):
+    def deleteClusterRoleBinding(self):
         try:
-            # gcloud dns managed-zones create "us-central1-a-securethebox-us" --dns-name "us-central1-a.securethebox.us." --description "Automatically managed zone by kubernetes.io/external-dns"
-            subprocess.Popen([f"gcloud dns managed-zones delete us-central1-a-securethebox-us"], shell=True).wait()
-            subprocess.Popen([f"gcloud dns record-sets transaction abort --zone=us-central1-a-securethebox-us"], shell=True).wait()
-            # gcloud dns record-sets list --zone "us-central1-a-securethebox-us" --name "us-central1-a.securethebox.us." --type NS
-            # subprocess.Popen([f"gcloud dns record-sets list --zone \"us-central1-a-securethebox-us\" --name \"us-central1-a.securethebox.us.\" --type NS >> /dev/null 2>&1"], shell=True).wait()
-            subprocess.Popen([f"kubectl delete clusterrolebinding cluster-admin-binding"], shell=True).wait()
-            # subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"securethebox-us\" >> /dev/null 2>&1"], shell=True).wait()
-            # subprocess.Popen([f"gcloud dns record-sets transaction add ns-cloud-d{{1..4}}.googledomains.com. --name \"us-central1-a.securethebox.us.\" --ttl 300 --type NS --zone \"securethebox-us\" >> /dev/null 2>&1"], shell=True).wait()
-            # subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"securethebox-us\" >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen([f"kubectl delete clusterrolebinding external-dns"], shell=True).wait()
             return True
         except:
             return False
@@ -505,7 +478,6 @@ class KubernetesController():
                     pod_id = str(i)
                     findPod = False
                     self.kubernetesPodId = pod_id
-                    print("POD ID:",str(pod_id))
                     return True, str(pod_id)
             return False, "0"
 
@@ -523,7 +495,7 @@ class KubernetesController():
 
     def deployImage(self):
         try:
-            subprocess.Popen([f"gcloud config set run/region us-central1"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set run/region uhttps://www.googleapis.com/auth/ndev.clouddns.readwrites-central1"],shell=True).wait()
             subprocess.Popen([f"gcloud config set run/platform gke"],shell=True).wait()
             subprocess.Popen([f"gcloud auth activate-service-account --key-file ./secrets/stb-kubernetes-engine-sa.json"],shell=True).wait()
             subprocess.Popen([f"gcloud config set project securethebox-server"],shell=True).wait()
@@ -541,15 +513,3 @@ class KubernetesController():
             return True
         except:
             return False
-
-
-""" ############################################################################################################################## """
-
-def kubernetesGeneratePodsYaml(clusterName, serviceName, userName):
-    print("Generating Pod Yaml", clusterName, serviceName, userName)
-    subprocess.Popen(
-        [f"python3.7 ./app_controllers/infrastructure/kubernetes-deployments/pods/{serviceName}/01_deployment.py {clusterName} {serviceName} {userName}"], shell=True).wait()
-
-def kubernetesManagePods(clusterName, serviceName, userName, action):
-    subprocess.Popen(
-        [f"kubectl {action} -f ./app_controllers/infrastructure/kubernetes-deployments/pods/{serviceName}/01_{clusterName}-{serviceName}-{userName}-deployment.yml"], shell=True).wait()
