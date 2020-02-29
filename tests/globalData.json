@@ -1,9 +1,14 @@
 {
     "serviceName_ingress": "traefik",
-    "serviceName_service": "jenkins",
+    "serviceName_service": [
+        "jenkins", 
+        "gitlab",
+        "juice-shop",
+        "nginx-modsecurity"
+    ],
     "serviceName_dns": "external-dns",
     "serviceName_authentication": "auth",
-    "userName": "testusernamelower",
+    "userName": "username",
     "emailAddress": "jidokaus@gmail.com",
     "kubectlAction_apply": "apply",
     "kubectlAction_delete": "delete",
@@ -32,7 +37,7 @@
     ],
     "googleProjectId": "securethebox-server",
     "googleKubernetesComputeZone": "us-central1-a",
-    "googleKubernetesComputeCluster": "testclusternamelower",
+    "googleKubernetesComputeCluster": "us-central1-a",
     "googleKubernetesComputeRegion": "us-central1",
     "googleKubernetesEngineNamespace": "",
     "googleKubernetesEngineServiceAccountEmail": "stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com",
