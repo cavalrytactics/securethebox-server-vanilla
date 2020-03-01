@@ -14,7 +14,7 @@
 .gitignore
 venv/
 .vscode/
-.history/
+.history/*
 dev-env/oh-my-zsh/coder/
 dev-env/code-server/extensions/
 dev-env/code-server/logs/
