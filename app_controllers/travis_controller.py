@@ -110,10 +110,10 @@ class TravisController():
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[ivVariableKEY] = output.strip().decode(
                             "utf-8").replace("iv:", "").strip()
-                        with open("./secrets/openssl.txt","w") as f:
+                        with open("./secrets/travis-openssl-keys-values.txt","w") as f:
                             f.write(f"{keyVariableKEY}={self.encryptedEnvironmentVariables[keyVariableKEY]},")
                             f.write(f"{ivVariableKEY}={self.encryptedEnvironmentVariables[ivVariableKEY]}")
-                        with open("./secrets/openssl","w") as f:
+                        with open("./secrets/travis-openssl-keys","w") as f:
                             f.write(f"{keyVariableKEY},{ivVariableKEY}")
                         return True
             else:

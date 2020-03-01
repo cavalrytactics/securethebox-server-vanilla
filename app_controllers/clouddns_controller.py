@@ -185,6 +185,7 @@ class CloudDnsController():
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"v=spf1 include:_spf.firebasemail.com ~all\" \"firebase={self.firebaseSiteName}\" --name \"{self.parentDomain}.\" --ttl 300 --type TXT --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim1._domainkey.firebasemail.com.\" --name \"firebase1._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim2._domainkey.firebasemail.com.\" --name \"firebase2._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
+                    subprocess.Popen([f"gcloud dns record-sets transaction add \"ghs.googlehosted.com.\" --name \"cloud-run.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:

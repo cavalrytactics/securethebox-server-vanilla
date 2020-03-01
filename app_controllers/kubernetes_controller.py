@@ -10,7 +10,6 @@ import shutil
 
 class KubernetesController():
     def __init__(self):
-        self.podId = ""
         self.currentDirectory = ""
         self.serviceName = ""
         self.userName = ""
@@ -18,9 +17,7 @@ class KubernetesController():
         self.fileName = ""
         self.kubernetesDeploymentImage = ""
         self.kubernetesDeploymentName = ""
-        self.kubernetesHost = ""
         self.googleProjectId = ""
-        self.googleCredentials = ""
         self.googleKubernetesComputeZone = ""
         self.googleKubernetesComputeCluster = ""
         self.googleKubernetesComputeRegion = ""
@@ -29,7 +26,6 @@ class KubernetesController():
         self.challengeId = "0000"
         self.challengeGroupId = "1234"
         self.kubernetesPodId = ""
-        self.activeIps = []
 
     def setFileName(self, fileName):
         try:
@@ -107,7 +103,7 @@ class KubernetesController():
 
     def generateIngressYamlFiles(self):
         try:
-            fileList = ["02_cluster-role",
+            fileList = ["01_permissions","02_cluster-role",
                         "03_config", "04_deployment", "05_service", "06_ingress"]
             for file in fileList:
                 fullFilePath = f"{self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/{file}"
@@ -400,9 +396,9 @@ class KubernetesController():
         elif objectType == "backend-services":
             subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q backend-services delete {objectId} --region={self.googleKubernetesComputeRegion}"],shell=True).wait()
         elif objectType == "forwarding-rules":
-            subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q forwarding-rules  delete {objectId} --region={self.googleKubernetesComputeRegion}"],shell=True).wait()
+            subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q forwarding-rules delete {objectId} --region={self.googleKubernetesComputeRegion}"],shell=True).wait()
         elif objectType == "health-checks":
-            subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q health-checks  delete {objectId}"],shell=True).wait()
+            subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q health-checks delete {objectId}"],shell=True).wait()
         elif objectType == "addresses":
             subprocess.Popen([f"echo 'y' | gcloud compute --project=\"{self.googleProjectId}\" addresses delete {objectId}"],shell=True).wait()
     
@@ -435,6 +431,19 @@ class KubernetesController():
         except:
             return False
 
+    def deleteFirewallRulesTest(self):
+        try:
+            command = ["gcloud",f"--project={self.googleProjectId}","compute","firewall-rules","list","--format=value(name)",f"--filter=name ~ ^k8s"]
+            out = check_output(command)
+            object_list = out.decode('utf-8')
+            object_split_list = object_list.splitlines()
+            for objectId in object_split_list:
+                print(objectId)
+                self.helper_checkValidFirewallRule(objectId)
+            return True
+        except:
+            return False
+
     def deleteStaticIPsStatusReserved(self):
         try:
             command = ["gcloud",f"--project={self.googleProjectId}","compute","addresses","list","--format=value(name)","--filter=STATUS ~ ^RESERVED"]
@@ -459,15 +468,11 @@ class KubernetesController():
                 self.helper_deleteOrphanObject(objectId, "forwarding-rules")
                 self.helper_deleteOrphanObject(objectId, "target-pools")
                 self.helper_deleteOrphanObject(objectId, "health-checks")
-            print("\n\nIF YOU SEE ERRORS HERE, YOU NEED TO DELETE MANUALLY!")
+            print("\n\nIF YOU SEE ERRORS HERE, >>>>> FALSE POSITIVE <<<<<")
             print(f"\nhttps://console.cloud.google.com/net-services/loadbalancing/loadBalancers/list?project={self.googleProjectId}\n")
             return True
         except:
             return False
-
-        # https://stackoverflow.com/questions/48930737/how-to-delete-load-balancer-using-gcloud-command
-        # https://github.com/pantheon-systems/kube-gce-cleanup/blob/master/lib/delete-orphans.bash
-
 
     def selectGoogleKubernetesClusterContext(self):
         try:
@@ -485,6 +490,8 @@ class KubernetesController():
 
     def manageKubernetesIngressPod(self):
         try:
+            subprocess.Popen(
+                [f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/01_permissions-{self.googleKubernetesComputeCluster}-{self.serviceName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
                 [f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/02_cluster-role-{self.googleKubernetesComputeCluster}-{self.serviceName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(

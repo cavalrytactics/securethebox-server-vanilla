@@ -18,7 +18,7 @@ metadata:
     ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
 spec:
   rules:
-    - host: traefik.us-central1-a.securethebox.us
+    - host: {serviceName}.{clusterName}.securethebox.us
       http:
         paths:
         - path: /

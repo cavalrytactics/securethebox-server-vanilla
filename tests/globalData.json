@@ -11,15 +11,13 @@
     "kubectlAction_delete": "delete",
     "kubernetesPodId": "pod_id_123",
     "unencryptedFileNames": [
-        "securethebox-client-stb-cloud-run-sa.json",
-        "stb-kubernetes-engine-sa.json",
-        "firebase-adminsdk.json",
-        "openssl",
-        "secrets.tar",
-        "openssl.txt",
         "all_environment_variables.txt",
-        "stripe_publishable_dev.txt",
-        "stripe_secret_dev.txt"
+        "firebase-adminsdk.json",
+        "secrets.tar",
+        "securethebox-client-stb-cloud-run-sa.json",
+        "securethebox-server-stb-kubernetes-engine-sa.json",
+        "travis-openssl-keys",
+        "travis-openssl-keys-values.txt"
     ],
     "environmentVariablesList": [
         "GOOGLE_CLIENT_ID",
@@ -39,14 +37,14 @@
     "googleKubernetesEngineNamespace": "",
     "googleKubernetesEngineServiceAccountEmail": "stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com",
     "googleKubernetesEngineServiceAccountFile": "stb-kubernetes-engine-sa.json",
-    "googleCloudRunServiceAccountEmail":"stb-cloud-run-sa@securethebox-client.iam.gserviceaccount.com",
-    "googleCloudRunServiceAccountFile":"securethebox-client-stb-cloud-run-sa.json",
-    "googleCloudRunProjectId":"securethebox-client",
-    "googleCloudRunImageName":"securethebox-server",
-    "googleCloudRunRegion":"us-central1",
-    "googleCloudRunPlatform":"managed",
-    "googleCloudDnsParentDomain":"securethebox.us",
-    "googleCloudDnsParentManagedZone":"securethebox-us",
-    "googleCloudDnsSubDomainPrefix":"us-central1-a",
-    "googleCloudDnsSubManagedZonePrefix":"us-central1-a"
+    "googleCloudRunServiceAccountEmail": "stb-cloud-run-sa@securethebox-client.iam.gserviceaccount.com",
+    "googleCloudRunServiceAccountFile": "securethebox-client-stb-cloud-run-sa.json",
+    "googleCloudRunProjectId": "securethebox-client",
+    "googleCloudRunImageName": "securethebox-server",
+    "googleCloudRunRegion": "us-central1",
+    "googleCloudRunPlatform": "managed",
+    "googleCloudDnsParentDomain": "securethebox.us",
+    "googleCloudDnsParentManagedZone": "securethebox-us",
+    "googleCloudDnsSubDomainPrefix": "us-central1-a",
+    "googleCloudDnsSubManagedZonePrefix": "us-central1-a"
 }
