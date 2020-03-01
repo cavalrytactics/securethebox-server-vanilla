@@ -6,15 +6,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: auth
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: {serviceName}.{clusterName}.securethebox.us
 spec:
   selector:
     app: auth
   ports:
-  - name: http
-    targetPort: 4181
-    port: 80
+    - name: http
+      targetPort: 4181
+      port: 80
               """
 
     with open('./app_controllers/infrastructure/kubernetes-deployments/authentication/'+str(sys.argv[2])+'/02_service-'+str(sys.argv[1])+'-'+str(sys.argv[2])+'-'+str(sys.argv[3])+'.yml', 'w') as yfile:

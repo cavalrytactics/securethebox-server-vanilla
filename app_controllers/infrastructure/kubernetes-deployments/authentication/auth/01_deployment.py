@@ -22,6 +22,8 @@ spec:
       - name: auth
         image: thomseddon/traefik-forward-auth:2
         env:
+          - name: DEFAULT_PROVIDER
+            value: "google"
           - name: PROVIDERS_GOOGLE_CLIENT_ID
             value: "{googleClientId}"
           - name: PROVIDERS_GOOGLE_CLIENT_SECRET
@@ -30,14 +32,16 @@ spec:
             value: "random"
           - name: INSECURE_COOKIE
             value: "true"
-          - name: COOKIE_DOMAINS
-            value: "securethebox.us,{clusterName}.securethebox.us,jenkins-{userName}.{clusterName}.securethebox.us,gitlab-{userName}.{clusterName}.securethebox.us"
-          - name: DOMAINS
-            value: "securethebox.us,{clusterName}.securethebox.us,jenkins-{userName}.{clusterName}.securethebox.us,gitlab-{userName}.{clusterName}.securethebox.us"
+          - name: COOKIE_DOMAIN
+            value: "securethebox.us,us-central1-a.securethebox.us"
+          - name: DOMAIN
+            value: "securethebox.us,us-central1-a.securethebox.us"
           - name: AUTH_HOST
             value: "auth.securethebox.us"
+          - name: URL_PATH
+            value: "/_oauth"
           - name: DEFAULT_ACTION
-            value: "allow"
+            value: "auth"
           - name: WHITELIST
             value: "{emailAddress}"
         ports:

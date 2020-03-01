@@ -9,22 +9,15 @@ metadata:
   namespace: default
 data:
   traefik.toml: |
-    defaultEntryPoints = ["http", "https"]
+    defaultEntryPoints = ["http"]
     [entryPoints]
       [entryPoints.http]
       address = ":80"
       [entryPoints.http.auth.forward]
       address = "http://auth"
       authResponseHeaders = ["X-Forwarded-User"]
-      #   [entryPoints.http.redirect]
-      #     entryPoint = "https"
-      # [entryPoints.https]
-      # address = ":443"
-      #   [entryPoints.https.tls]
     [kubernetes]
     [respondingTimeouts]
-      # idleTimeout is the maximum duration an idle (keep-alive) connection will remain idle before closing itself.
-      # This needs to be set longer than the GCP load balancer timeout
       idleTimeout = "620s"
               """
 

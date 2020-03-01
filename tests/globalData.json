@@ -1,10 +1,7 @@
 {
     "serviceName_ingress": "traefik",
     "serviceName_service": [
-        "jenkins", 
-        "gitlab",
-        "juice-shop",
-        "nginx-modsecurity"
+        "jenkins"
     ],
     "serviceName_dns": "external-dns",
     "serviceName_authentication": "auth",

@@ -11,7 +11,7 @@ metadata:
     kubernetes.io/preserve-host: "true"
     traefik.frontend.passHostHeader: "false"
     ingress.kubernetes.io/auth-type: forward
-    ingress.kubernetes.io/auth-url: http://auth
+    ingress.kubernetes.io/auth-url: http://auth.us-central1-a.securethebox.us
     ingress.kubernetes.io/auth-trust-headers: true
     ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
 spec:

@@ -12,15 +12,16 @@ spec:
   selector:
     app: {serviceName}-{userName}
   ports:
-  - name: http
-    targetPort: 8000
-    port: 8000
-  - name: management
-    targetPort: 8089
-    port: 8089
-  - name: forwarder
-    targetPort: 9997
-    port: 9997
+    - name: http
+      targetPort: 8000
+      port: 80
+    - name: management
+      targetPort: 8089
+      port: 8089
+    - name: forwarder
+      targetPort: 9997
+      port: 9997
+  type: LoadBalancer
               """
 
     with open('./app_controllers/infrastructure/kubernetes-deployments/services/'+str(sys.argv[2])+'/02_service-'+str(sys.argv[1])+'-'+str(sys.argv[2])+'-'+str(sys.argv[3])+'.yml', 'w') as yfile:

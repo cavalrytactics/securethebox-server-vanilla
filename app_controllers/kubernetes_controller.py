@@ -106,7 +106,7 @@ class KubernetesController():
 
     def generateIngressYamlFiles(self):
         try:
-            fileList = ["01_permissions", "02_cluster-role",
+            fileList = ["02_cluster-role",
                         "03_config", "04_deployment", "05_service", "06_ingress"]
             for file in fileList:
                 fullFilePath = f"{self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/{file}"
@@ -122,7 +122,7 @@ class KubernetesController():
 
     def generateServiceYamlFiles(self):
         try:
-            fileList = ["01_deployment", "02_service", "03_ingress"]
+            fileList = ["01_cluster-role","01_deployment", "02_service", "03_ingress"]
             for file in fileList:
                 fullFilePath = f"{self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/services/{self.serviceName}/{file}"
                 subprocess.Popen(
@@ -366,14 +366,14 @@ class KubernetesController():
 
     def createClusterRoleBinding(self):
         try:
-            subprocess.Popen([f"kubectl create clusterrolebinding external-dns --clusterrole=cluster-admin --user=cavalrytacticsinc@gmail.com"], shell=True).wait()
+            subprocess.Popen([f"kubectl create clusterrolebinding external-dns --clusterrole=cluster-admin --user=cavalrytacticsinc@gmail.com >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False
 
     def deleteClusterRoleBinding(self):
         try:
-            subprocess.Popen([f"kubectl delete clusterrolebinding external-dns"], shell=True).wait()
+            subprocess.Popen([f"kubectl delete clusterrolebinding external-dns >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False
@@ -407,8 +407,6 @@ class KubernetesController():
     def manageKubernetesIngressPod(self):
         try:
             subprocess.Popen(
-                [f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/01_permissions-{self.googleKubernetesComputeCluster}-{self.serviceName}.yml >> /dev/null 2>&1"], shell=True).wait()
-            subprocess.Popen(
                 [f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/02_cluster-role-{self.googleKubernetesComputeCluster}-{self.serviceName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen(
                 [f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/03_config-{self.googleKubernetesComputeCluster}-{self.serviceName}.yml >> /dev/null 2>&1"], shell=True).wait()
@@ -441,6 +439,7 @@ class KubernetesController():
 
     def manageKubernetesServicePod(self):
         try:
+            subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/services/{self.serviceName}/01_cluster-role-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/services/{self.serviceName}/01_deployment-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/services/{self.serviceName}/02_service-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/services/{self.serviceName}/03_ingress-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
@@ -459,8 +458,8 @@ class KubernetesController():
 
     def manageKubernetesDnsPod(self):
         try:
-            subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/dns/external-dns/01_cluster-role-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
-            subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/dns/external-dns/02_deployment-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/dns/external-dns/01_cluster-role-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/dns/external-dns/02_deployment-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False

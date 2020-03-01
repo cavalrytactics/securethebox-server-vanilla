@@ -12,14 +12,13 @@ metadata:
   namespace: default
   annotations:
     kubernetes.io/ingress.class: traefik
-    external-dns.alpha.kubernetes.io/target: {serviceName}.{clusterName}.securethebox.us
     ingress.kubernetes.io/auth-trust-headers: true
     ingress.kubernetes.io/auth-type: forward
     ingress.kubernetes.io/auth-url: http://auth
     ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
 spec:
   rules:
-    - host: {serviceName}.{clusterName}.securethebox.us
+    - host: traefik.us-central1-a.securethebox.us
       http:
         paths:
         - path: /
