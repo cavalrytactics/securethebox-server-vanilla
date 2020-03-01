@@ -12,8 +12,8 @@
 # below:
 .git
 .gitignore
-.vscode
 venv/
+.vscode/
 dev-env/oh-my-zsh/coder/
 dev-env/code-server/extensions/
 dev-env/code-server/logs/
@@ -27,6 +27,7 @@ secrets/*.txt
 secrets/*.yaml
 secrets/*.yml
 secrets/*.tar
+.DS_Store
 
 # Python pycache:
 __pycache__/

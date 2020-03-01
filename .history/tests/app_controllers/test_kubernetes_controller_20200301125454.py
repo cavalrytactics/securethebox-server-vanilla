@@ -16,7 +16,7 @@ def test_loadGlobalData():
 
 # ##############################################################################
 
-# #              COMMENT ALL BELOW TO NOT APPLY DEPLOYMENT
+# #              COMMENT ALL BELOW TO APPLY DEPLOYMENT
 
 # ##############################################################################
 

@@ -1,5 +1,5 @@
 from flask_restplus import Namespace, Resource, fields, reqparse
-from app_controllers.creator.application import (
+from app_controllers.firestore.application import (
     Application,
 )
 

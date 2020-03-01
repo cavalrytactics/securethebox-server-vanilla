@@ -401,8 +401,6 @@ class KubernetesController():
             subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q backend-services delete {objectId} --region={self.googleKubernetesComputeRegion}"],shell=True).wait()
         elif objectType == "forwarding-rules":
             subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q forwarding-rules  delete {objectId} --region={self.googleKubernetesComputeRegion}"],shell=True).wait()
-        elif objectType == "health-checks":
-            subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q health-checks  delete {objectId}"],shell=True).wait()
         elif objectType == "addresses":
             subprocess.Popen([f"echo 'y' | gcloud compute --project=\"{self.googleProjectId}\" addresses delete {objectId}"],shell=True).wait()
     
@@ -458,7 +456,6 @@ class KubernetesController():
             for objectId in object_split_list:
                 self.helper_deleteOrphanObject(objectId, "forwarding-rules")
                 self.helper_deleteOrphanObject(objectId, "target-pools")
-                self.helper_deleteOrphanObject(objectId, "health-checks")
             print("\n\nIF YOU SEE ERRORS HERE, YOU NEED TO DELETE MANUALLY!")
             print(f"\nhttps://console.cloud.google.com/net-services/loadbalancing/loadBalancers/list?project={self.googleProjectId}\n")
             return True
@@ -591,3 +588,14 @@ class KubernetesController():
             return True
         except:
             return False
+
+
+# Need some way to delete all orphaned loadbalancers, pools, healthchecks
+
+# target pools
+# gcloud compute target-pools remove-health-checks <name> --region=<region>
+
+# health checks
+# gcloud compute health-checks delete <name> --region=<region>
+
+# https://stackoverflow.com/questions/48930737/how-to-delete-load-balancer-using-gcloud-command

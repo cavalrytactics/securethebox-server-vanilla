@@ -1,4 +1,6 @@
 # SECURETHEBOX
+.git
+.gitignore
 venv/
 .vscode/
 dev-env/oh-my-zsh/coder/
@@ -14,6 +16,7 @@ secrets/*.txt
 secrets/*.yaml
 secrets/*.yml
 secrets/*.tar
+.DS_Store
 
 # Logs
 logs

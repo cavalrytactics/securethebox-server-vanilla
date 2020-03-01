@@ -12,10 +12,10 @@ data:
     defaultEntryPoints = ["http"]
     [entryPoints]
       [entryPoints.http]
-      address = ":80"
+        address = ":80"
       [entryPoints.http.auth.forward]
-      address = "http://auth"
-      authResponseHeaders = ["X-Forwarded-User"]
+        address = "http://auth"
+        authResponseHeaders = ["X-Forwarded-User"]
     [kubernetes]
     [respondingTimeouts]
       idleTimeout = "620s"

@@ -4,7 +4,6 @@ from flask_cors import CORS, cross_origin
 import os
 from apiv1 import blueprint as apiv1
 from apiv2 import blueprint as apiv2
-from apiv3 import blueprint as apiv3
 
 """
 
@@ -21,8 +20,6 @@ api_v1 = app.register_blueprint(apiv1, url_prefix='/api/v1')
 # Api v2 - GRAPHQL
 api_v2 = app.register_blueprint(apiv2)
 
-# Api v3 - GRPC
-api_v3 = app.register_blueprint(apiv3, url_prefix='/api/v3')
 CORS(app, resources={r"/*": {"origins": "*", "methods":["GET","POST"]}})
 
 if __name__ == '__main__':
