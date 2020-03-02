@@ -211,7 +211,6 @@ class CloudDnsController():
                 try:           
                     out = check_output(command)
                     ipAddress = out.decode("utf-8")
-                    print(ipAddress)
                     authIP = ipAddress.replace('\'','')
                     subprocess.Popen([f"gcloud dns record-sets transaction abort --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()

@@ -280,19 +280,19 @@ def test_getKubernetesPodStatus():
         assert value == True
 
 def test_addAuthARecordInParentDNSManagedZone():
-    c.setGoogleProjectId(pytest.globalData["googleProjectId"])
-    c.setGoogleKubernetesProject()
-    c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
-    c.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
-    c.setCurrentDirectory()
-    c.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
-    c.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
-    c.loadGoogleKubernetesServiceAccount() 
-    c.setParentDomain(pytest.globalData["googleCloudDnsParentDomain"])
-    c.setSubDomainPrefix(pytest.globalData["googleCloudDnsSubDomainPrefix"])
-    c.setParentManagedZone(pytest.globalData["googleCloudDnsParentManagedZone"])
-    c.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
-    assert c.addAuthARecordInParentDNSManagedZone() == True
+    x.setGoogleProjectId(pytest.globalData["googleProjectId"])
+    x.setGoogleKubernetesProject()
+    x.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
+    x.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
+    x.setCurrentDirectory()
+    x.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
+    x.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
+    x.loadGoogleKubernetesServiceAccount() 
+    x.setParentDomain(pytest.globalData["googleCloudDnsParentDomain"])
+    x.setSubDomainPrefix(pytest.globalData["googleCloudDnsSubDomainPrefix"])
+    x.setParentManagedZone(pytest.globalData["googleCloudDnsParentManagedZone"])
+    x.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
+    assert x.addAuthARecordInParentDNSManagedZone() == True
 
 # # ##############################################################################
 
