@@ -279,6 +279,21 @@ def test_getKubernetesPodStatus():
         value, podStatus = c.getkubernetesPodStatus()
         assert value == True
 
+def test_addAuthARecordInParentDNSManagedZone():
+    c.setGoogleProjectId(pytest.globalData["googleProjectId"])
+    c.setGoogleKubernetesProject()
+    c.setGoogleKubernetesComputeRegion(pytest.globalData["googleKubernetesComputeRegion"])
+    c.setGoogleKubernetesComputeZone(pytest.globalData["googleKubernetesComputeZone"])
+    c.setCurrentDirectory()
+    c.setFileName(pytest.globalData["googleKubernetesEngineServiceAccountFile"])
+    c.setGoogleServiceAccountEmail(pytest.globalData["googleKubernetesEngineServiceAccountEmail"])
+    c.loadGoogleKubernetesServiceAccount() 
+    c.setParentDomain(pytest.globalData["googleCloudDnsParentDomain"])
+    c.setSubDomainPrefix(pytest.globalData["googleCloudDnsSubDomainPrefix"])
+    c.setParentManagedZone(pytest.globalData["googleCloudDnsParentManagedZone"])
+    c.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
+    assert c.addAuthARecordInParentDNSManagedZone() == True
+
 # # ##############################################################################
 
 # # #              COMMENT ALL BELOW TO NOT DELETE DEPLOYMENT
