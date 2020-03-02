@@ -18,7 +18,7 @@ try:
     cred = credentials.Certificate(os.getcwd()+'/secrets/firebase-adminsdk.json')
 except:
     currentDirectory = os.getcwd()
-    with open(os.getcwd()+"/secrets/openssl","r") as f:
+    with open(os.getcwd()+"/secrets/travis-openssl-keys","r") as f:
         envList = str(f.readline()).replace("$","").split(",")
         os.chdir(os.getcwd()+"/secrets")
         print(f"openssl aes-256-cbc -K {os.environ[str(envList[0])]} -iv {os.environ[str(envList[1])]} -in secrets.tar.enc -out secrets.tar -d && tar xvf secrets.tar")

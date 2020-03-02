@@ -191,5 +191,5 @@ class Course(Document):
     category = ReferenceField(Category)
     report = ReferenceField(Report)
     cluster = ReferenceField(Cluster)
-    steps = ListField(ReferenceField(Step))
     status = StringField()
+    steps = ListField(ReferenceField(Step))

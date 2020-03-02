@@ -1,6 +1,6 @@
 import graphene
 from app_models.graphql.models import Course
-from app_types.types import CourseType
+from app_types.types import CourseType, StepType
 
 class CourseInput(graphene.InputObjectType):
     id = graphene.ID()
@@ -14,6 +14,7 @@ class CourseInput(graphene.InputObjectType):
     length = graphene.Int()
     totalSteps = graphene.Int()
     slug = graphene.String()
+    steps = graphene.List(graphene.String)
 
 class CreateCourseMutation(graphene.Mutation):
     course = graphene.Field(CourseType)
@@ -23,15 +24,15 @@ class CreateCourseMutation(graphene.Mutation):
         course = Course(
             title=course_data.title,
             description=course_data.description,
-            steps=course_data.steps,
             report=course_data.report,
             category=course_data.category,
-            status=course_data.status,
             cluster=course_data.cluster,
+            status=course_data.status,
             activeStep=course_data.activeStep,
             length=course_data.length,
             totalSteps=course_data.totalSteps,
             slug=course_data.slug,
+            steps=course_data.steps
         )
         course.save()
         return CreateCourseMutation(course=course)
@@ -65,6 +66,8 @@ class UpdateCourseMutation(graphene.Mutation):
             course.totalSteps = course_data.totalSteps
         if course_data.slug:
             course.slug = course_data.slug
+        if course_data.steps:
+            course.steps = course_data.slug
         course.save()
         return UpdateCourseMutation(course=course)
 

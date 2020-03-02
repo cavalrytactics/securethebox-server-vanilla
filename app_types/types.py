@@ -19,6 +19,7 @@ from app_models.graphql.models import (
     Scope, 
     Service, 
     Solution, 
+	Step,
     Subscription, 
 	Team,
     Topic, 
@@ -96,6 +97,10 @@ class ServiceType(MongoengineObjectType):
 class SolutionType(MongoengineObjectType):
 	class Meta:
 		model = Solution
+		interfaces = (relay.Node,)
+class StepType(MongoengineObjectType):
+	class Meta:
+		model = Step
 		interfaces = (relay.Node,)
 class SubscriptionType(MongoengineObjectType):
 	class Meta:

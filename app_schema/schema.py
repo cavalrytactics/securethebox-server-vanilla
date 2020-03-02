@@ -20,6 +20,7 @@ from app_models.graphql.models import (
     Scope,
     Service,
     Solution,
+    Step,
     Subscription,
     Team,
     Topic,
@@ -45,6 +46,7 @@ from app_types.types import (
     ScopeType,
     ServiceType,
     SolutionType,
+    StepType,
     SubscriptionType,
     TeamType,
     TopicType,
@@ -144,6 +146,11 @@ from app_mutations.solutions.mutations import (
     UpdateSolutionMutation,
     DeleteSolutionMutation,
 )
+from app_mutations.steps.mutations import (
+    CreateStepMutation,
+    UpdateStepMutation,
+    DeleteStepMutation,
+)
 from app_mutations.subscriptions.mutations import (
     CreateSubscriptionMutation,
     UpdateSubscriptionMutation,
@@ -189,6 +196,7 @@ class Mutations(graphene.ObjectType):
     create_scope = CreateScopeMutation.Field()
     create_service = CreateServiceMutation.Field()
     create_solution = CreateSolutionMutation.Field()
+    create_step = CreateStepMutation.Field()
     create_subscription = CreateSubscriptionMutation.Field()
     create_team = CreateTeamMutation.Field()
     create_topic = CreateTopicMutation.Field()
@@ -215,6 +223,7 @@ class Mutations(graphene.ObjectType):
     update_service_add_application = UpdateServiceAddApplicationMutation.Field()
     update_service_delete_application = UpdateServiceDeleteApplicationMutation.Field()
     update_solution = UpdateSolutionMutation.Field()
+    update_step = UpdateStepMutation.Field()
     update_subscription = UpdateSubscriptionMutation.Field()
     update_team = UpdateTeamMutation.Field()
     update_topic = UpdateTopicMutation.Field()
@@ -239,6 +248,7 @@ class Mutations(graphene.ObjectType):
     delete_scope = DeleteScopeMutation.Field()
     delete_service = DeleteServiceMutation.Field()
     delete_solution = DeleteSolutionMutation.Field()
+    delete_step = DeleteStepMutation.Field()
     delete_subscription = DeleteSubscriptionMutation.Field()
     delete_team = DeleteTeamMutation.Field()
     delete_topic = DeleteTopicMutation.Field()
@@ -266,6 +276,7 @@ class Query(graphene.ObjectType):
     scopes = MongoengineConnectionField(ScopeType)
     services = MongoengineConnectionField(ServiceType)
     solutions = MongoengineConnectionField(SolutionType)
+    steps = MongoengineConnectionField(StepType)
     subscriptions = MongoengineConnectionField(SubscriptionType)
     teams = MongoengineConnectionField(TeamType)
     topics = MongoengineConnectionField(TopicType)
@@ -291,6 +302,7 @@ class Query(graphene.ObjectType):
     scopes_list = graphene.List(ScopeType)
     services_list = graphene.List(ServiceType)
     solutions_list = graphene.List(SolutionType)
+    steps_list = graphene.List(StepType)
     subscriptions_list = graphene.List(SubscriptionType)
     teams_list = graphene.List(TeamType)
     topics_list = graphene.List(TopicType)
@@ -333,6 +345,8 @@ class Query(graphene.ObjectType):
         return Service.objects.all()
     def resolve_solutions_list(self, info):
         return Solution.objects.all()
+    def resolve_steps_list(self, info):
+        return Step.objects.all()
     def resolve_subscriptions_list(self, info):
         return Subscription.objects.all()
     def resolve_teams_list(self, info):
@@ -365,6 +379,7 @@ schema = graphene.Schema(
         ScopeType,
         ServiceType,
         SolutionType,
+        StepType,
         SubscriptionType,
         TeamType,
         TopicType,

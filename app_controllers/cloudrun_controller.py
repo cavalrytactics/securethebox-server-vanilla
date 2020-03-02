@@ -107,15 +107,15 @@ class CloudRunController():
 
     def deployImage(self):
         try:
-            fileExists = path.exists(self.currentDirectory+"/secrets/openssl.txt")
+            fileExists = path.exists(self.currentDirectory+"/secrets/travis-openssl-keys-values.txt")
             # For Local Deploy
             if fileExists == True:
-                with open(self.currentDirectory+"/secrets/openssl.txt","r") as f:
+                with open(self.currentDirectory+"/secrets/travis-openssl-keys-values.txt","r") as f:
                     env = str(f.readline()).replace("$","")
                     subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/{self.projectId}/{self.imageName} --update-env-vars {env} --region {self.region}"],shell=True).wait()
             # For Travis Deploy
             else:
-                with open(self.currentDirectory+"/secrets/openssl","r") as f:
+                with open(self.currentDirectory+"/secrets/travis-openssl-keys","r") as f:
                     envList = str(f.readline()).replace("$","")
                     slist = envList.split(",")
                     l = []

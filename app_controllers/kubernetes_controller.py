@@ -336,7 +336,7 @@ class KubernetesController():
                 --machine-type \"n1-standard-1\" \
                 --image-type \"COS\" \
                 --disk-type \"pd-standard\" \
-                --disk-size \"30\" \
+                --disk-size \"50\" \
                 --scopes \"https://www.googleapis.com/auth/devstorage.read_only\",\"https://www.googleapis.com/auth/logging.write\",\"https://www.googleapis.com/auth/monitoring\",\"https://www.googleapis.com/auth/servicecontrol\",\"https://www.googleapis.com/auth/service.management.readonly\",\"https://www.googleapis.com/auth/ndev.clouddns.readwrite\",\"https://www.googleapis.com/auth/trace.append\" \
                 --num-nodes \"4\" \
                 --enable-ip-alias \
@@ -577,24 +577,3 @@ class KubernetesController():
             else:
                 return True, i
         return False, "unknown"
-
-    def deployImage(self):
-        try:
-            subprocess.Popen([f"gcloud config set run/region https://www.googleapis.com/auth/ndev.clouddns.readwrites-central1"],shell=True).wait()
-            subprocess.Popen([f"gcloud config set run/platform gke"],shell=True).wait()
-            subprocess.Popen([f"gcloud auth activate-service-account --key-file ./secrets/stb-kubernetes-engine-sa.json"],shell=True).wait()
-            subprocess.Popen([f"gcloud config set project securethebox-server"],shell=True).wait()
-            subprocess.Popen([f"gcloud config set account stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com"],shell=True).wait()
-            subprocess.Popen([f"docker build . --tag gcr.io/securethebox-server/securethebox-server"],shell=True).wait()
-            subprocess.Popen([f"docker push gcr.io/securethebox-server/securethebox-server"],shell=True).wait()
-            subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/securethebox-server/securethebox-server --cluster testclusternamelower --cluster-location us-central1-a"],shell=True).wait()
-            return True
-        except:
-            return False
-
-    def deleteImage(self):
-        try:
-            subprocess.Popen([f"echo 'y' | gcloud run services delete securethebox-server --cluster testclusternamelower --cluster-location us-central1-a"],shell=True).wait()
-            return True
-        except:
-            return False
