@@ -1,38 +1,47 @@
 import graphene
-from app_models.graphql.models import Course
-from app_types.types import CourseType, StepType
+from app_models.graphql.models import Course, Report, Category, Cluster
+from app_types.types import CourseType,ReportType,CategoryType,ClusterType
+from app_mutations.reports.mutations import ReportInput
+from app_mutations.categories.mutations import CategoryInput
+from app_mutations.clusters.mutations import ClusterInput
 
 class CourseInput(graphene.InputObjectType):
     id = graphene.ID()
     title = graphene.String()
     description = graphene.String()
-    report = graphene.ID()
-    category = graphene.ID()
-    cluster = graphene.ID()
-    status = graphene.String()
     activeStep = graphene.Int()
     length = graphene.Int()
     totalSteps = graphene.Int()
     slug = graphene.String()
-    steps = graphene.List(graphene.String)
 
 class CreateCourseMutation(graphene.Mutation):
     course = graphene.Field(CourseType)
+    category = graphene.Field(CategoryType)
+    cluster = graphene.Field(ClusterType)
     class Arguments:
         course_data = CourseInput(required=True)
-    def mutate(self, info, course_data=None):
+        category_data = CategoryInput(required=False)
+        cluster_data = ClusterInput(required=False)
+    @staticmethod
+    def get_category_object_by_value(value):
+        return Category.objects.get(value=value)
+
+    @staticmethod
+    def get_cluster_object_by_name(name):
+        return Cluster.objects.get(name=name)
+    
+    def mutate(self, info, course_data=None,  category_data=None, cluster_data=None):
+        category = CreateCourseMutation.get_category_object_by_value(category_data.value)
+        cluster = CreateCourseMutation.get_cluster_object_by_name(cluster_data.name)
         course = Course(
             title=course_data.title,
             description=course_data.description,
-            report=course_data.report,
-            category=course_data.category,
-            cluster=course_data.cluster,
-            status=course_data.status,
+            category=category,
+            cluster=cluster,
             activeStep=course_data.activeStep,
             length=course_data.length,
             totalSteps=course_data.totalSteps,
-            slug=course_data.slug,
-            steps=course_data.steps
+            slug=course_data.slug
         )
         course.save()
         return CreateCourseMutation(course=course)
@@ -50,14 +59,8 @@ class UpdateCourseMutation(graphene.Mutation):
             course.title = course_data.title
         if course_data.description:
             course.description = course_data.description
-        if course_data.report:
-            course.report = course_data.report
-        if course_data.category:
-            course.category = course_data.category
         if course_data.status:
             course.status = course_data.status
-        if course_data.cluster:
-            course.cluster = course_data.cluster
         if course_data.activeStep:
             course.activeStep = course_data.activeStep
         if course_data.length:
@@ -67,7 +70,7 @@ class UpdateCourseMutation(graphene.Mutation):
         if course_data.slug:
             course.slug = course_data.slug
         if course_data.steps:
-            course.steps = course_data.slug
+            course.steps = course_data.steps
         course.save()
         return UpdateCourseMutation(course=course)
 

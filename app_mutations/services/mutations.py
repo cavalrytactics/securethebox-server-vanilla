@@ -32,11 +32,10 @@ class UpdateServiceMutation(graphene.Mutation):
     application = graphene.Field(ApplicationType)
     class Arguments:
         service_data = ServiceInput(required=True)
-        application_data = ApplicationInput(required=False)
     @staticmethod
     def get_service_object(id):
         return Service.objects.get(pk=id)
-    def mutate(self, info, service_data=None, application_data=None):
+    def mutate(self, info, service_data=None):
         service = UpdateServiceMutation.get_service_object(service_data.id)
         if service_data.value:
             service.value = service_data.value

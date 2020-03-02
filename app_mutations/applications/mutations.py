@@ -9,8 +9,10 @@ class ApplicationInput(graphene.InputObjectType):
 
 class CreateApplicationMutation(graphene.Mutation):
     application = graphene.Field(ApplicationType)
+
     class Arguments:
         application_data = ApplicationInput(required=True)
+        
     def mutate(self, info, application_data=None):
         application = Application(
             value=application_data.value
