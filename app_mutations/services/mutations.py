@@ -5,8 +5,9 @@ from app_mutations.applications.mutations import ApplicationInput
 
 class ServiceInput(graphene.InputObjectType):
     id = graphene.ID()
-    name = graphene.String()
+    label = graphene.String()
     value = graphene.String()
+    type = graphene.String()
 
 class CreateServiceMutation(graphene.Mutation):
     service = graphene.Field(ServiceType)
@@ -14,18 +15,44 @@ class CreateServiceMutation(graphene.Mutation):
     class Arguments:
         service_data = ServiceInput(required=True)
         application_data = ApplicationInput(required=False)
+
+    @staticmethod
+    def get_application_object_by_value(value):
+        return Application.objects.get(value=value) 
+
     def mutate(self, info, service_data=None, application_data=None):
-        application = Application(
-                value=application_data.value
-        )
-        application.save()
+        # 1-1 service -> application
+        # should it be application -> service? probably
+        application = CreateServiceMutation.get_application_object_by_value(application_data.value)
         service = Service(
+            label=service_data.label,
             value=service_data.value,
+            type=service_data.type,
             applications=[application]
         )
+        try:
+            service_object = Service.objects.get(title=service_data.value)
+        except Service.DoesNotExist:
+            service_object = None
+        if service_object:
+            # Service exists
+            service = service_object
+            if service_data.label:
+                service.label = service_data.label
+            if service_data.value:
+                service.value = service_data.value
+            if service_data.serviceType:
+                service.serviceType = service_data.serviceType
+            if application_data.value:
+                if application not in service.applications:
+                    service.applications.append(application)
+            service.save()
+            return UpdateServiceMutation(service=service)
+        else:
+            # Service does not exist
+            service.save()
+            return CreateServiceMutation(service=service)
         
-        service.save()
-        return CreateServiceMutation(service=service)
 
 class UpdateServiceMutation(graphene.Mutation):
     service = graphene.Field(ServiceType)

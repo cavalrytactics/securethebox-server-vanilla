@@ -32,7 +32,7 @@ class AppSchema():
             print("Travis command does not exist!")
             return True
          else:
-            subprocess.Popen([f"mv {self.currentDirectory}/app_schema/schema.json ../securethebox-client-vanilla/graphql/schema.json"],shell=True).wait()
+            subprocess.Popen([f"mv {self.currentDirectory}/app_schema/schema.json ../securethebox-client-vanilla/graphql/schema.graphql"],shell=True).wait()
          return True
       except:
          return False

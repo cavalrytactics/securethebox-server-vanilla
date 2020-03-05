@@ -46,5 +46,31 @@
     "googleCloudDnsParentDomain": "securethebox.us",
     "googleCloudDnsParentManagedZone": "securethebox-us",
     "googleCloudDnsSubDomainPrefix": "us-central1-a",
-    "googleCloudDnsSubManagedZonePrefix": "us-central1-a"
+    "googleCloudDnsSubManagedZonePrefix": "us-central1-a",
+    "graphqlSubjects":[
+        "applications",
+        "categories",
+        "clusters",
+        "companies",
+        "competencies",
+        "configurations",
+        "containers",
+        "courses",
+        "credentials",
+        "dummies",
+        "jobs",
+        "metrics",
+        "questions",
+        "ranks",
+        "reports",
+        "scopes",
+        "services",
+        "solutions",
+        "steps",
+        "subscriptions",
+        "teams",
+        "topics",
+        "universities",
+        "users"
+    ]
 }

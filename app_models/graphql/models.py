@@ -127,8 +127,8 @@ class Dummy(Document):
 class Application(Document):
     meta = {"collection": "applications"}
     ID = ObjectIdField()
-    value = StringField()
-    status = StringField()
+    name = StringField()
+    version = StringField()
     configuration = ReferenceField(Configuration)
     questions = ListField(ReferenceField(Question))
     dummies = ListField(ReferenceField(Dummy))
@@ -146,6 +146,8 @@ class Service(Document):
     meta = {"collection": "services"}
     ID = ObjectIdField()
     value = StringField()
+    label = StringField()
+    type = StringField()
     applications = ListField(ReferenceField(Application))
 
 class Report(Document):

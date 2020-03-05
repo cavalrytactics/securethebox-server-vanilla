@@ -20,3 +20,26 @@
   - Divides up API versions for future development
   - apiv1 is traditional REST API
   - apiv2 is reserved for GraphQL functionality
+
+## Starting App Locally
+
+1. Install dependencies
+``` 
+pip3 install -r requirements.txt
+```
+2. Start service with gunicorn (Has reload flag to reload for any code changes)
+```
+gunicorn --bind 0.0.0.0:5000 main:app --reload
+```
+
+## Starting App with Docker
+
+1. Build docker image
+```
+docker build .
+```
+
+2. Run docker image
+```
+docker run
+```

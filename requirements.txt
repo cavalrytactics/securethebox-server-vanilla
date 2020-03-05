@@ -1,5 +1,6 @@
 aniso8601==7.0.0
 attrs==19.3.0
+autopep8==1.5
 CacheControl==0.12.6
 cachetools==4.0.0
 certifi==2019.11.28
@@ -28,6 +29,7 @@ google-cloud-storage==1.25.0
 google-resumable-media==0.5.0
 googleapis-common-protos==1.51.0
 gql==0.3.0
+gql-query-builder==0.1.5
 graphene==2.1.8
 graphene-mongo==0.2.9
 graphql-core==2.3.1
@@ -58,6 +60,7 @@ protobuf==3.11.3
 py==1.8.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
+pycodestyle==2.5.0
 pymongo==3.10.1
 pyparsing==2.4.6
 pyrsistent==0.15.7

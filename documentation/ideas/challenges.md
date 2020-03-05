@@ -26,6 +26,10 @@
 - Interviewee clicks on link, when user is ready, the environment is deployed (takes 10 minutes)
 
 
+# MISC
+- there should be a selection on the industry try
+- compliance implementation
+- CIS Controls implementation
 
 
 # Sales
