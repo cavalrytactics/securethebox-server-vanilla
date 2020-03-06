@@ -168,28 +168,26 @@ class CloudDnsController():
                 dnsRecord = out.decode("utf-8").splitlines()[1]
                 if "ns-cloud-a1" in dnsRecord or "ns-cloud-d1" in dnsRecord:
                     print("FOUND:",dnsRecord)
-                    break
+                    subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                    command2 = ["gcloud","dns","record-sets","list","--zone",f"{self.subManagedZonePrefix}-{self.parentManagedZone}","--name",f"{self.subManagedZonePrefix}.{self.parentDomain}.","--type","NS"]
+                    out2 = check_output(command2)
+                    dnsRecord2 = out2.decode("utf-8").splitlines()[1]
+                    options = ["ns-cloud-a", "ns-cloud-c", "ns-cloud-d", "ns-cloud-e", "ns-cloud-f"]
+                    for x in options:
+                        if x in dnsRecord2:
+                            subprocess.Popen([f"gcloud dns record-sets transaction add {x}{{1..4}}.googledomains.com. --name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --ttl 300 --type NS --zone \"{self.parentManagedZone}\""], shell=True).wait()            
+                            subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                            subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"www.{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                            subprocess.Popen([f"gcloud dns record-sets transaction add \"v=spf1 include:_spf.firebasemail.com ~all\" \"firebase={self.firebaseSiteName}\" --name \"{self.parentDomain}.\" --ttl 300 --type TXT --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                            subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim1._domainkey.firebasemail.com.\" --name \"firebase1._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                            subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim2._domainkey.firebasemail.com.\" --name \"firebase2._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                            subprocess.Popen([f"gcloud dns record-sets transaction add \"ghs.googlehosted.com.\" --name \"cloud-run.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                            subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                    return True
                 else:
                     print("FAILED:",dnsRecord)
                     subprocess.Popen([f"gcloud dns managed-zones delete {self.parentManagedZone}"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns managed-zones create \"{self.parentManagedZone}\" --dns-name \"{self.parentDomain}.\" --description \"Managed by clouddns_controller.py\""], shell=True).wait()
-            
-            subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\""], shell=True).wait()
-            command2 = ["gcloud","dns","record-sets","list","--zone",f"{self.subManagedZonePrefix}-{self.parentManagedZone}","--name",f"{self.subManagedZonePrefix}.{self.parentDomain}.","--type","NS"]
-            out2 = check_output(command2)
-            dnsRecord2 = out2.decode("utf-8").splitlines()[1]
-            options = ["ns-cloud-a", "ns-cloud-c", "ns-cloud-d", "ns-cloud-e", "ns-cloud-f"]
-            for x in options:
-                if x in dnsRecord2:
-                    subprocess.Popen([f"gcloud dns record-sets transaction add {x}{{1..4}}.googledomains.com. --name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --ttl 300 --type NS --zone \"{self.parentManagedZone}\""], shell=True).wait()            
-                    subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"www.{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction add \"v=spf1 include:_spf.firebasemail.com ~all\" \"firebase={self.firebaseSiteName}\" --name \"{self.parentDomain}.\" --ttl 300 --type TXT --zone \"{self.parentManagedZone}\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim1._domainkey.firebasemail.com.\" --name \"firebase1._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim2._domainkey.firebasemail.com.\" --name \"firebase2._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction add \"ghs.googlehosted.com.\" --name \"cloud-run.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\""], shell=True).wait()
-            return True
         except:
             return False
 
