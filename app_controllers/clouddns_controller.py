@@ -174,6 +174,7 @@ class CloudDnsController():
                     dnsRecord2 = out2.decode("utf-8").splitlines()[1]
                     options = ["ns-cloud-a", "ns-cloud-c", "ns-cloud-d", "ns-cloud-e", "ns-cloud-f"]
                     for x in options:
+                        print(x, dnsRecord2)
                         if x in dnsRecord2:
                             subprocess.Popen([f"gcloud dns record-sets transaction add {x}{{1..4}}.googledomains.com. --name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --ttl 300 --type NS --zone \"{self.parentManagedZone}\""], shell=True).wait()            
                             subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\""], shell=True).wait()
