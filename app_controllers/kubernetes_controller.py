@@ -332,7 +332,7 @@ class KubernetesController():
                 --project \"{self.googleProjectId}\" clusters create \"{self.googleKubernetesComputeCluster}\" \
                 --zone \"{self.googleKubernetesComputeZone}\" \
                 --no-enable-basic-auth \
-                --cluster-version \"1.14.8-gke.33\" \
+                --cluster-version \"1.14.10-gke.17\" \
                 --machine-type \"n1-standard-1\" \
                 --image-type \"COS\" \
                 --disk-type \"pd-standard\" \
