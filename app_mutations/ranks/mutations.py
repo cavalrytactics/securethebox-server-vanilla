@@ -4,8 +4,9 @@ from app_types.types import RankType
 
 class RankInput(graphene.InputObjectType):
     id = graphene.ID()
-    name = graphene.String()
-    value = graphene.String()
+    coursesComplete = graphene.Int()
+    flagsObtained = graphene.Int()
+    position = graphene.Int()
 
 class CreateRankMutation(graphene.Mutation):
     rank = graphene.Field(RankType)

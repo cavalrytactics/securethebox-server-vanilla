@@ -5,7 +5,7 @@ from gql_query_builder import GqlQuery
 from inspect import getmembers, isfunction, getmodule
 import pprint
 import subprocess
-
+import shutil
 
 class CodeGenerator():
     def __init__(self):
@@ -135,7 +135,11 @@ class CodeGenerator():
 
     def copyToFrontend(self):
         try:
-            subprocess.Popen([f"mv {self.currentDirectory}/app_schema/{self.operationName}.graphql ../securethebox-client-vanilla/src/@stb/graphql/{self.queryType}/{self.operationName}.graphql"],shell=True).wait()
+            if shutil.which("travis") is None:
+                print("Travis command does not exist!")
+                return True
+            else:
+                subprocess.Popen([f"mv {self.currentDirectory}/app_schema/{self.operationName}.graphql ../securethebox-client-vanilla/src/@stb/graphql/{self.queryType}/{self.operationName}.graphql"],shell=True).wait()
             return True
         except:
             return False

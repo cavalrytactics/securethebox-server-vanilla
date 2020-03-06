@@ -2,10 +2,8 @@ from app_schema.code_generator import CodeGenerator
 import os
 import pytest
 import json
-from app_mutations.courses.mutations import CreateCourseMutation, CourseInput
 import importlib
-from inspect import isclass, getmembers, isfunction, getmodule
-import sys
+from inspect import isclass, getmembers
 import inflect
 
 c = CodeGenerator()
@@ -26,7 +24,6 @@ def test_generateGraphqlFiles():
             pluralField = p.plural_noun(modelName.lower()).capitalize()
             for subject in pytest.globalData["graphqlSubjects"]:
                 if subject == pluralField.lower():
-                    print("-->",modelName.lower(),"subject:",subject)
                     assert c.setQueryType("mutation") == True
                     assert c.setSubject(modelName.lower()) == True
                     assert c.setOperationName("create"+modelName.capitalize()) == True
@@ -35,7 +32,6 @@ def test_generateGraphqlFiles():
                     moduleToImport = f"app_mutations.{pluralField.lower()}.mutations"
                     gbl[moduleToImport] = importlib.import_module(moduleToImport)
                     for name, cls in getmembers(importlib.import_module(moduleToImport), isclass):
-                        # print(name,cls)
                         if "Input" in name:
                             assert c.setInputClass(cls) == True
                         if "Mutation" in name:
@@ -48,5 +44,3 @@ def test_generateGraphqlFiles():
                         assert c.writeFile() == True
                         assert c.copyToFrontend() == True
                     assert c.resetClass() == True
-
-
