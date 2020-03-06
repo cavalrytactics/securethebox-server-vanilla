@@ -174,7 +174,7 @@ class CloudDnsController():
                     subprocess.Popen([f"gcloud dns managed-zones delete {self.parentManagedZone}"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns managed-zones create \"{self.parentManagedZone}\" --dns-name \"{self.parentDomain}.\" --description \"Managed by clouddns_controller.py\""], shell=True).wait()
             
-            subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\"1"], shell=True).wait()
+            subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\""], shell=True).wait()
             command2 = ["gcloud","dns","record-sets","list","--zone",f"{self.subManagedZonePrefix}-{self.parentManagedZone}","--name",f"{self.subManagedZonePrefix}.{self.parentDomain}.","--type","NS"]
             out2 = check_output(command2)
             dnsRecord2 = out2.decode("utf-8").splitlines()[1]
