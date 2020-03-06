@@ -166,21 +166,21 @@ class CloudDnsController():
             for x in range(10):                
                 out = check_output(command)
                 dnsRecord = out.decode("utf-8").splitlines()[1]
-                print(dnsRecord)
                 if "ns-cloud-a1" in dnsRecord or "ns-cloud-d1" in dnsRecord:
-                    print(dnsRecord)
+                    print("FOUND:",dnsRecord)
                     break
                 else:
+                    print("FOUND:",dnsRecord)
                     subprocess.Popen([f"gcloud dns managed-zones delete {self.parentManagedZone} >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns managed-zones create \"{self.parentManagedZone}\" --dns-name \"{self.parentDomain}.\" --description \"Managed by clouddns_controller.py\" >> /dev/null 2>&1"], shell=True).wait()
             
             subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
             command2 = ["gcloud","dns","record-sets","list","--zone",f"{self.subManagedZonePrefix}-{self.parentManagedZone}","--name",f"{self.subManagedZonePrefix}.{self.parentDomain}.","--type","NS"]
             out2 = check_output(command2)
-            dnsRecord = out2.decode("utf-8").splitlines()[1]
-            options = ["ns-cloud-a", "ns-cloud-b", "ns-cloud-c", "ns-cloud-d", "ns-cloud-e", "ns-cloud-f"]
+            dnsRecord2 = out2.decode("utf-8").splitlines()[1]
+            options = ["ns-cloud-a", "ns-cloud-c", "ns-cloud-d", "ns-cloud-e", "ns-cloud-f"]
             for x in options:
-                if x in dnsRecord:
+                if x in dnsRecord2:
                     subprocess.Popen([f"gcloud dns record-sets transaction add {x}{{1..4}}.googledomains.com. --name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --ttl 300 --type NS --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()            
                     subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"www.{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
