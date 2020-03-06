@@ -166,7 +166,9 @@ class CloudDnsController():
             for x in range(10):                
                 out = check_output(command)
                 dnsRecord = out.decode("utf-8").splitlines()[1]
+                print(dnsRecord)
                 if "ns-cloud-a1" in dnsRecord or "ns-cloud-d1" in dnsRecord:
+                    print(dnsRecord)
                     break
                 else:
                     subprocess.Popen([f"gcloud dns managed-zones delete {self.parentManagedZone} >> /dev/null 2>&1"], shell=True).wait()
