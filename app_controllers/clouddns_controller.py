@@ -163,11 +163,11 @@ class CloudDnsController():
             subprocess.Popen([f"gcloud dns managed-zones create \"{self.parentManagedZone}\" --dns-name \"{self.parentDomain}.\" --description \"Managed by clouddns_controller.py\" >> /dev/null 2>&1"], shell=True).wait()
             command = ["gcloud","dns","record-sets","list","--zone",f"{self.parentManagedZone}","--name",f"{self.parentDomain}.","--type","NS"]
             whileLoop = True
-            while whileLoop:                
+            for x in range(10):                
                 out = check_output(command)
                 dnsRecord = out.decode("utf-8").splitlines()[1]
                 if "ns-cloud-a1" in dnsRecord or "ns-cloud-d1" in dnsRecord:
-                    whileLoop = False
+                    break
                 else:
                     subprocess.Popen([f"gcloud dns managed-zones delete {self.parentManagedZone} >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns managed-zones create \"{self.parentManagedZone}\" --dns-name \"{self.parentDomain}.\" --description \"Managed by clouddns_controller.py\" >> /dev/null 2>&1"], shell=True).wait()
