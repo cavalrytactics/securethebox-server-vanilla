@@ -136,7 +136,6 @@ class CodeGenerator():
     def copyToFrontend(self):
         try:
             if shutil.which("travis") is None:
-                print("Travis command does not exist!")
                 return True
             else:
                 subprocess.Popen([f"mv {self.currentDirectory}/app_schema/{self.operationName}.graphql ../securethebox-client-vanilla/src/@stb/graphql/{self.queryType}/{self.operationName}.graphql"],shell=True).wait()

@@ -186,7 +186,7 @@ class CloudDnsController():
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim1._domainkey.firebasemail.com.\" --name \"firebase1._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim2._domainkey.firebasemail.com.\" --name \"firebase2._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"ghs.googlehosted.com.\" --name \"cloud-run.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
+                    subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\""], shell=True).wait()
             return True
         except:
             return False
@@ -198,7 +198,7 @@ class CloudDnsController():
             subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"gcloud dns record-sets import --zone \"{self.parentManagedZone}\" --delete-all-existing /dev/null >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
-            subprocess.Popen([f"gcloud dns managed-zones delete {self.parentManagedZone} >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen([f"gcloud dns managed-zones delete {self.parentManagedZone}"], shell=True).wait()
             return True
         except:
             return False
@@ -215,7 +215,7 @@ class CloudDnsController():
                     subprocess.Popen([f"gcloud dns record-sets transaction abort --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add {authIP} --name \"auth.{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
+                    subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\""], shell=True).wait()
                     whileLoop = False
                     return True
                 except:
@@ -233,7 +233,7 @@ class CloudDnsController():
         for x in options:
             if x in dnsRecord:
                 subprocess.Popen([f"gcloud dns record-sets transaction add {x}{{1..4}}.googledomains.com. --name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --ttl 300 --type NS --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()            
-                subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
+                subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\""], shell=True).wait()
 
     def removeChildInParentDNSManagedZone(self):
         subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
@@ -244,11 +244,11 @@ class CloudDnsController():
         for x in options:
             if x in dnsRecord:
                 subprocess.Popen([f"gcloud dns record-sets transaction remove {x}{{1..4}}.googledomains.com. --name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --ttl 300 --type NS --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()            
-                subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
+                subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.parentManagedZone}\""], shell=True).wait()
 
     def createChildExternalDNSManagedZones(self):
         try:
-            subprocess.Popen([f"gcloud dns managed-zones create \"{self.subManagedZonePrefix}-{self.parentManagedZone}\" --dns-name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --description \"Automatically managed zone by kubernetes.io/external-dns\" >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen([f"gcloud dns managed-zones create \"{self.subManagedZonePrefix}-{self.parentManagedZone}\" --dns-name \"{self.subManagedZonePrefix}.{self.parentDomain}.\" --description \"Automatically managed zone by kubernetes.io/external-dns\""], shell=True).wait()
             return True
         except:
             return False
@@ -259,7 +259,7 @@ class CloudDnsController():
             subprocess.Popen([f"gcloud dns record-sets transaction start --zone \"{self.subManagedZonePrefix}-{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"gcloud dns record-sets import --zone \"{self.subManagedZonePrefix}-{self.parentManagedZone}\" --delete-all-existing /dev/null >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"gcloud dns record-sets transaction execute --zone \"{self.subManagedZonePrefix}-{self.parentManagedZone}\" >> /dev/null 2>&1"], shell=True).wait()
-            subprocess.Popen([f"gcloud dns managed-zones delete {self.subManagedZonePrefix}-{self.parentManagedZone} >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen([f"gcloud dns managed-zones delete {self.subManagedZonePrefix}-{self.parentManagedZone}"], shell=True).wait()
             return True
         except:
             return False
