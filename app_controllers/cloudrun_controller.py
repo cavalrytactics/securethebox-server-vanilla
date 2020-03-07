@@ -92,7 +92,33 @@ class CloudRunController():
 
     def buildImage(self):
         try:
-            subprocess.Popen([f"docker build . --tag gcr.io/{self.projectId}/{self.imageName}"],shell=True).wait()
+            fileExists = path.exists(self.currentDirectory+"/secrets/travis-openssl-keys-values.txt")
+            # For Local Deploy
+            if fileExists == True:
+                with open(self.currentDirectory+"/secrets/travis-openssl-keys-values.txt","r") as f:
+                    env = str(f.readline()).replace("$","")
+                    variables = env.split(",")
+                    key = variables[0].split("=")[1]
+                    iv = variables[1].split("=")[1]
+                    print("KEY",key, "IV",iv)
+                    # subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/{self.projectId}/{self.imageName} --update-env-vars {env} --region {self.region}"],shell=True).wait()
+                    subprocess.Popen([f"docker build . --build-arg key={key} --build-arg iv={iv} --tag gcr.io/{self.projectId}/{self.imageName}"],shell=True).wait()
+            # For Travis Deploy
+            else:
+                with open(self.currentDirectory+"/secrets/travis-openssl-keys","r") as f:
+                    envList = str(f.readline()).replace("$","")
+                    slist = envList.split(",")
+                    l = []
+                    for line in slist:
+                        l.append(line+"="+str(os.environ[str(line)]))
+                    concatList = ",".join(l)
+                    variables = concatList.split(",")
+                    key = variables[0].split("=")[1]
+                    iv = variables[1].split("=")[1]
+                    # subprocess.Popen([f"gcloud run deploy securethebox-server --image gcr.io/{self.projectId}/{self.imageName} --update-env-vars {concatList} --region {self.region}"],shell=True).wait()
+                    subprocess.Popen([f"docker build . -build-arg key={key} --build-arg iv={iv} --tag gcr.io/{self.projectId}/{self.imageName}"],shell=True).wait()
+            return True
+            
             return True
         except:
             return False

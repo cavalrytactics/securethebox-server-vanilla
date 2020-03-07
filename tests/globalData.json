@@ -13,7 +13,6 @@
     "unencryptedFileNames": [
         "all_environment_variables.txt",
         "firebase-adminsdk.json",
-        "secrets.tar",
         "securethebox-client-stb-cloud-run-sa.json",
         "securethebox-server-stb-kubernetes-engine-sa.json",
         "travis-openssl-keys",

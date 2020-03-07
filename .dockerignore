@@ -16,7 +16,7 @@ secrets/*.json
 secrets/*.txt
 secrets/*.yaml
 secrets/*.yml
-secrets/*.tar
+secrets/secrets.tar
 .DS_Store
 
 # Logs
